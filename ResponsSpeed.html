@@ -1,31 +1,72 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>반응속도</title>
-    <style>
-        #screen {
-            width: 300px;
-            height: 200px;
-            text-align: center;
-            user-select: none;
-        }
-        #screen.waiting {
-            background-color: aqua;
-        }
-        #screen.ready {
-            background-color: red;
-            color :white;
-        }
-        #screen.now {
-           background-color:greenyellow ;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>반응속도</title>
+<style>
+#screen {
+  width: 300px;
+  height: 200px;
+  text-align: center;
+  user-select: none;
+}
+#screen.waiting {
+  background-color: aqua;
+}
+#screen.ready {
+  background-color: red;
+  color :white;
+}
+#screen.now {
+background-color:greenyellow ;
+}
+</style>
 </head>
 <body>
-    <div id="screen" class="waiting">클릭해서 시작하세요!</div>
-    <script src="ResponsSpeed.js"></script>
+<div id="screen" class="waiting">클릭해서 시작하세요!</div>
+<div id="result"></div>
+<script >
+const $screen = document.querySelector('#screen');
+const $result = document.querySelector('#result');
+
+let startTime;
+let endTime;
+const records = [];
+
+$screen.addEventListener('click',(event)=> {
+  if(event.target.classList.contains('waiting')){ //파랑
+  $screen.classList.remove('waiting');
+  $screen.classList.add('ready');
+  $screen.textContent='초록색이 되면 클릭하세요';
+  setTimeout(function(){
+      startTime = new Date();
+      $screen.classList.remove('ready');
+      $screen.classList.add('now');
+      $screen.textContent = '클릭하세염~';
+  },Math.floor(Math.random() * 1000)+2000); //2초~3초 사이
+  } else if(event.target.classList.contains('ready')){ //빨강
+      
+  } else if(event.target.classList.contains('now')){ //초록
+      //끝 시간 재기
+      endTime = new Date();
+      const current = endTime - startTime;
+      records.push(current);
+      const average = records.reduce((a, c) => a + c)/records.length;
+      //평균을 구할때 많이 사용함 reduce 함수 에서  length 함수로 나눠줌
+      //reduce 는 초기값을 넣지 않았을 경우 배열의 첫번째가 초기값이 된다.
+      
+      $result.textContent = '현재: ${current}ms, 평균: ${average}ms';
+      startTime = null;
+      endTime = null;
+      //$result.textContent = '${endTime - startTime}ms';  자바스크립트는 1970년도부터 세기때문에 뒤로갈수록 숫자가 커짐 즉 현재에이를수록 숫자가 커짐
+      $screen.classList.remove('now');
+      $screen.classList.add('waiting');
+      $screen.textContent = '클릭해서 시작하세요';
+      //시간 차이
+  }
+} );
+</script>
 </body>
 </html>

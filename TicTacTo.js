@@ -5,26 +5,10 @@ var 칸들 = [];
 var 턴 = "X";
 var 결과 = document.createElement("div");
 var 후보칸 = [];
-
-var 비동기콜백 = function (이벤트) {
-  console.log(이벤트.target); //칸
-  console.log(이벤트.target.parentNode); //줄
-  console.log(이벤트.target.parentNode.parentNode); // 테이블
-
-  var 몇줄 = 줄들.indexOf(이벤트.target.parentNode);
-  console.log("몇줄", 몇줄);
-  var 몇칸 = 칸들[몇줄].indexOf(이벤트.target);
-  console.log("몇칸", 몇칸);
-
-  if (칸들[몇줄][몇칸].textContent !== "") {
-    //칸이 이미 채워저 있는가?
-    console.log("빈칸이 아닙니다.");
-  } else {
-    // 빈칸이면
-    console.log("빈칸입니다.");
-    칸들[몇줄][몇칸].textContent = 턴;
-    //세칸 다 채워짐?
-    var 다참 = false;
+var 다참;
+function 결과확인 () {
+  //세칸 다 채워짐?
+  var 다참 = false;
     //가로줄 검사
     if (
       칸들[몇줄][0].textContent === 턴 &&
@@ -61,6 +45,29 @@ var 비동기콜백 = function (이벤트) {
         다참 = true;
       }
     
+      return 다참;
+    
+}
+
+
+var 비동기콜백 = function (이벤트) {
+  console.log(이벤트.target); //칸
+  console.log(이벤트.target.parentNode); //줄
+  console.log(이벤트.target.parentNode.parentNode); // 테이블
+
+  var 몇줄 = 줄들.indexOf(이벤트.target.parentNode);
+  console.log("몇줄", 몇줄);
+  var 몇칸 = 칸들[몇줄].indexOf(이벤트.target);
+  console.log("몇칸", 몇칸);
+
+  if (칸들[몇줄][몇칸].textContent !== "") {
+    //칸이 이미 채워저 있는가?
+    console.log("빈칸이 아닙니다.");
+  } else {
+    // 빈칸이면
+    console.log("빈칸입니다.");
+    칸들[몇줄][몇칸].textContent = 턴;
+    var 다참 = 결과확인();
     //다 찼으면
     if (다참) {
       결과.textContent = 턴 + "님이 승리!";
@@ -88,43 +95,7 @@ var 비동기콜백 = function (이벤트) {
      var 선택칸 = 후보칸[Math.floor(Math.random() * 후보칸.length)];
      선택칸.textContent = '턴'
      //컴퓨터 승리 체크
-     var 다참 = false;
-    //가로줄 검사
-    if (
-      칸들[몇줄][0].textContent === 턴 &&
-      칸들[몇줄][1].textContent === 턴 &&
-      칸들[몇줄][2].textContent === 턴
-    ) {
-      다참 = true;
-    }
-    //세로줄 검사
-    if (
-      칸들[0][몇칸].textContent === 턴 &&
-      칸들[1][몇칸].textContent === 턴 &&
-      칸들[2][몇칸].textContent === 턴
-    ) {
-      다참 = true;
-    }
-    //대각선 검사
-      //규칙상 몇줄 몇칸을 뺏을때 0 이나 2가 될경우
-      //대각선 검사 필요한 경우
-      if (
-        칸들[0][0].textContent === 턴 &&
-        칸들[1][1].textContent === 턴 &&
-        칸들[2][2].textContent === 턴
-      ) {
-        다참 = true;
-      }
-      //규칙상 몇줄 몇칸을 뺏을때 0 이나 2가 될경우
-      //대각선 검사 필요한 경우
-      if (
-        칸들[0][2].textContent === 턴 &&
-        칸들[1][1].textContent === 턴 &&
-        칸들[2][0].textContent === 턴
-      ) {
-        다참 = true;
-      }
-    
+    var 다참 = 결과확인();
     //다 찼으면
     if (다참) {
       결과.textContent = 턴 + "님이 승리!";
@@ -135,10 +106,10 @@ var 비동기콜백 = function (이벤트) {
           칸.textContent = "";
         });
       });
+    }
       //유저에게 턴넘김
       턴 = 'X';
       }, 1000);
-       
     }
   }
 };
