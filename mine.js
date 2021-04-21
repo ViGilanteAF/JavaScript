@@ -248,6 +248,5 @@ document.querySelector('#exec').addEventListener('click', function () {
 //5.클로저
 
 
-//https://www.youtube.com/watch?v=K5F561R2GL4&list=PLcqDmjxt30Rtbxbh4eJREOVekql_kWVmu&index=64  4:17
-//https://github.com/ZeroCho/webgame-lecture/blob/master/%EC%A7%80%EB%A2%B0%EC%B0%BE%EA%B8%B0.js
-//https://www.youtube.com/watch?v=NqVl4jxy3Do&ab_channel=ZeroChoTV  1:38:01
+
+

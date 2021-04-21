@@ -4,6 +4,7 @@ var 줄들 = [];
 var 칸들 = [];
 var 턴 = "X";
 var 결과 = document.createElement("div");
+var 후보칸 = [];
 
 var 비동기콜백 = function (이벤트) {
   console.log(이벤트.target); //칸
@@ -41,7 +42,6 @@ var 비동기콜백 = function (이벤트) {
       다참 = true;
     }
     //대각선 검사
-    if (몇줄 - 몇칸 === 0) {
       //규칙상 몇줄 몇칸을 뺏을때 0 이나 2가 될경우
       //대각선 검사 필요한 경우
       if (
@@ -51,8 +51,6 @@ var 비동기콜백 = function (이벤트) {
       ) {
         다참 = true;
       }
-    }
-    if (Math.abs(몇줄 - 몇칸) === 2) {
       //규칙상 몇줄 몇칸을 뺏을때 0 이나 2가 될경우
       //대각선 검사 필요한 경우
       if (
@@ -62,8 +60,7 @@ var 비동기콜백 = function (이벤트) {
       ) {
         다참 = true;
       }
-    }
-
+    
     //다 찼으면
     if (다참) {
       결과.textContent = 턴 + "님이 승리!";
@@ -76,11 +73,72 @@ var 비동기콜백 = function (이벤트) {
       });
     } else {
       //다 안 찼으면
-      if (턴 == "X") {
-        턴 = "O";
-      } else {
-        턴 = "X";
+      if(턴 === 'X'){
+        턴 = '0';
       }
+      setTimeout(function(){
+      console.log('컴퓨터 턴');
+      //빈칸 중 하나 선택
+     칸들.forEach(function (줄){
+       줄.forEach(function(칸){
+         후보칸.push(칸);
+       });
+     });
+     후보칸 = 후보칸.filter(function (칸){return !칸.textContent});
+     var 선택칸 = 후보칸[Math.floor(Math.random() * 후보칸.length)];
+     선택칸.textContent = '턴'
+     //컴퓨터 승리 체크
+     var 다참 = false;
+    //가로줄 검사
+    if (
+      칸들[몇줄][0].textContent === 턴 &&
+      칸들[몇줄][1].textContent === 턴 &&
+      칸들[몇줄][2].textContent === 턴
+    ) {
+      다참 = true;
+    }
+    //세로줄 검사
+    if (
+      칸들[0][몇칸].textContent === 턴 &&
+      칸들[1][몇칸].textContent === 턴 &&
+      칸들[2][몇칸].textContent === 턴
+    ) {
+      다참 = true;
+    }
+    //대각선 검사
+      //규칙상 몇줄 몇칸을 뺏을때 0 이나 2가 될경우
+      //대각선 검사 필요한 경우
+      if (
+        칸들[0][0].textContent === 턴 &&
+        칸들[1][1].textContent === 턴 &&
+        칸들[2][2].textContent === 턴
+      ) {
+        다참 = true;
+      }
+      //규칙상 몇줄 몇칸을 뺏을때 0 이나 2가 될경우
+      //대각선 검사 필요한 경우
+      if (
+        칸들[0][2].textContent === 턴 &&
+        칸들[1][1].textContent === 턴 &&
+        칸들[2][0].textContent === 턴
+      ) {
+        다참 = true;
+      }
+    
+    //다 찼으면
+    if (다참) {
+      결과.textContent = 턴 + "님이 승리!";
+      // 초기화
+      턴 = "X";
+      칸들.forEach(function (줄) {
+        줄.forEach(function (칸) {
+          칸.textContent = "";
+        });
+      });
+      //유저에게 턴넘김
+      턴 = 'X';
+      }, 1000);
+       
     }
   }
 };
