@@ -35,6 +35,7 @@ let startTime;
 let endTime;
 const records = [];
 let timeoutId;
+
 $screen.addEventListener('click',(event)=> {
   if(event.target.classList.contains('waiting')){ //파랑
   $screen.classList.remove('waiting');
@@ -63,6 +64,11 @@ $screen.addEventListener('click',(event)=> {
       //reduce 는 초기값을 넣지 않았을 경우 배열의 첫번째가 초기값이 된다.
       $result.textContent = `현재: ${current}ms, 평균: ${average}ms`;
       // '' 이거 아니고 ~위에 있는 ` `이거임!!!!!!!! 아우!!!!썅!
+      
+      const Top = records.sort()
+      //top5 순위 만들기
+      //https://youtu.be/qB38nnP2q-s?t=5738
+
       startTime = null;
       endTime = null;
       //$result.textContent = '${endTime - startTime}ms';  자바스크립트는 1970년도부터 세기때문에 뒤로갈수록 숫자가 커짐 즉 현재에이를수록 숫자가 커짐
