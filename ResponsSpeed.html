@@ -69,23 +69,18 @@ $screen.addEventListener('click',(event)=> {
       console.log(records);
       const Top = records.sort(function(q, c){
         return q - c;
-        
       })
       console.log(Top);
       
-      var i = 0;
-        for(i=0;i<Top.length;i++){
-          $Top.textContent = ` ${i+1}순위 : ${Top[i]} `
-          i=i + 1;
-        }
-        
+      Top.forEach((Top, i)=>{ //Top ranking 에 대해서 반복문 수행
+        $result.append(
+          document.createElement('br'), //HTML에서 줄바꿈
+         `${i+1}순위 : ${Top}ms ` //횟수만큼 반복을 하면서 페이지상에 나타내줌
+        );
+      });
       
-
-      //top5 순위 만들기
-      //https://youtu.be/qB38nnP2q-s?t=5738
       //debugger; 
       //debugger; 를 이용하여 손쉽게 디버깅을 할 수 있음
-      
 
       startTime = null;
       endTime = null;
