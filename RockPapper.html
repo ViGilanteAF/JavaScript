@@ -14,22 +14,50 @@
   </head>
   <body>
     <div id="computer">
-      <img src="" alt="">
     </div>
     <div>
       <button id="rock" class="btn">바위</button>
       <button id="scissor" class="btn">가위</button>
       <button id="paper" class="btn">보</button>
     </div>
+    <div id = "score">0</div>
     <script>
       const $computer = document.querySelector('#computer');
       const $score = document.querySelector('#score');
       const $rock = document.querySelector('#rock');
       const $scissors = document.querySelector('#scissors');
       const $paper = document.querySelector('#paper');
-      const IMG_URL = '(https://raw.githubusercontent.com/ZeroCho/es2021-webgame/master/rsp.png';
-      $compter.style.background = `url(${IMG_URL}) 0 0`;
-      $compter.style.backgroundSize = 'aute 200px';
+      const IMG_URL = 'E:/Github/JavaScript/rsp.png';
+      //절대 경로 : 항상 시작이 C 드라이브 임
+      //상대 경로 : 내가 어떤 파일을 열었는지에 따라 경로가 다름
+
+      $computer.style.background = `url(${IMG_URL}) -464px 0`;
+      $computer.style.backgroundSize = 'auto 200px';
+      //이미지 사이즈가 크니 높이를 200px 로 넓이를 Auto로 높이 에 맞춰서 줄어듬
+
+      const rspX = {
+        scissors : '0',     //가위
+        rock : '-220px',      //바위
+        paper : '-440px',   //보
+      };
+
+      let computerChoice = 'scissors';
+      setInterval (() => {
+        if (computerChoice === 'scissors') { //가위면
+         cord = 'rock';
+        
+        } else if (computerChoice === 'rock') { //바위
+          computerChoice = 'paper';
+        
+        } else if (computerChoice === 'scissors'){ //보
+          //정확한 동작을 위해 else 를 마지막에 사용하는 것 보다 else if 로 해주는 게 생각하는 바로 엄격하게 동작시킬 수 있다.
+          //rspX.computerChoice 로 하면 안됨!! .을 찍은건 문자열 을 가지고오는거임
+        }
+        $computer.style.background = `url(${IMG_URL}) ${rspX[computerChoice]} 0`;
+        $computer.style.backgroundSize = 'aute 200px';
+      },50);
+
+      
     </script>
   </body>
 </html>
