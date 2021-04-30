@@ -27,7 +27,7 @@
       const $rock = document.querySelector('#rock');
       const $scissors = document.querySelector('#scissors');
       const $paper = document.querySelector('#paper');
-      const IMG_URL = 'E:/Github/JavaScript/rsp.png';
+      const IMG_URL = './/rsp.png';
       //절대 경로 : 항상 시작이 C 드라이브 임
       //상대 경로 : 내가 어떤 파일을 열었는지에 따라 경로가 다름
 
@@ -42,10 +42,10 @@
       };
 
       let computerChoice = 'scissors';
-      setInterval (() => {
+      const changeComputerHand = () => {
         if (computerChoice === 'scissors') { //가위면
-         cord = 'rock';
-        
+          computerChoice = 'rock';
+         
         } else if (computerChoice === 'rock') { //바위
           computerChoice = 'paper';
         
@@ -54,10 +54,27 @@
           //rspX.computerChoice 로 하면 안됨!! .을 찍은건 문자열 을 가지고오는거임
         }
         $computer.style.background = `url(${IMG_URL}) ${rspX[computerChoice]} 0`;
-        $computer.style.backgroundSize = 'aute 200px';
-      },50);
-
-      
+        $computer.style.backgroundSize = 'auto 200px';
+      }
+     let intervalId = setInterval (changeComputerHand, 50);
+      //함수 자리에는 함수를 넣어줘야지 뒤에() 가 붙으면 리턴값이 있다는 말임!!!
+      const clickButton = () => {
+        //Timer 는 호출이 될때마다 ID 가 하나씩 붙음  
+        //이 아이디가 누적이 되어서 마지막 실행 되어있는것만 저장이됨
+        clearInterval(intervalId); //클릭을 하자마자 실행이 됨
+        //점수 계산 , 화면표시
+      $rock.removeEventListener('click', clickButton);
+      $scissors.removeEventListener('click',clickButton);
+      $paper.removeEventListener('click', clickButton);
+        setTimeout(() => {
+          clearInterval(intervalId); //클릭 하고서 1초 뒤어 실행이됨
+          intervalId = setInterval(changeComputerHand, 50);
+        },1000);
+      };
+      $rock.addEventListener('click', clickButton);
+      $scissors.addEventListener('click',clickButton);
+      $paper.addEventListener('click', clickButton);
+      //1:01:55 https://youtu.be/wFFX1lSprfU?t=3715
     </script>
   </body>
 </html>
