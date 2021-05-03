@@ -58,23 +58,73 @@
       }
      let intervalId = setInterval (changeComputerHand, 50);
       //함수 자리에는 함수를 넣어줘야지 뒤에() 가 붙으면 리턴값이 있다는 말임!!!
+      let clickable = true; //flag 변수가 true False 에 따라서 변수가 실행유무를 결정함!!
       const clickButton = () => {
-        //Timer 는 호출이 될때마다 ID 가 하나씩 붙음  
-        //이 아이디가 누적이 되어서 마지막 실행 되어있는것만 저장이됨
-        clearInterval(intervalId); //클릭을 하자마자 실행이 됨
-        //점수 계산 , 화면표시
-      $rock.removeEventListener('click', clickButton);
-      $scissors.removeEventListener('click',clickButton);
-      $paper.removeEventListener('click', clickButton);
-        setTimeout(() => {
-          clearInterval(intervalId); //클릭 하고서 1초 뒤어 실행이됨
-          intervalId = setInterval(changeComputerHand, 50);
-        },1000);
-      };
+        if (clickable = true){
+          clearInterval(intervalId);
+          clickable = false;
+          //점수 게산 및 화면 표시
+          setTimeout(() => {
+            clickable = true;
+            intervalId = setInterval(changeComputerHand, 50);
+    },1000);
+  }
+};
+//====================================================================================================================
+// const clickButton = () => {
+//   //Timer 는 호출이 될때마다 ID 가 하나씩 붙음  
+//   //이 아이디가 누적이 되어서 마지막 실행 되어있는것만 저장이됨
+//   clearInterval(intervalId); //클릭을 하자마자 실행이 됨
+//   //점수 계산 , 화면표시
+// $rock.removeEventListener('click', clickButton);
+// $scissors.removeEventListener('click',clickButton);
+// $paper.removeEventListener('click', clickButton);
+//   setTimeout(() => {
+//     clearInterval(intervalId); //클릭 하고서 1초 뒤어 실행이됨
+//     let intervalId = setInterval(changeComputerHand, 50);
+    
+   
+//   },1000);
+// };
+//====================================================================================================================
+//removeEventListener 는 실수를 하기 쉬움!!! 그래서 코딩시에 추천을 하진 않음!!!
+
+// const fun = (값) => () => {
+//     console.log('고차함수 입니다.',값);
+// }
+// fun(1) === fun(1)
+// ==================================================================================================
+// {} === {}
+//  >false
+// [] === []
+//  >false
+// (() => {}) === (() => {})
+//  >false
+
+// 이렇기 때문에 fun(1) === fun(1) 은 서로 다른 '함수' 이기때문이다!!!
+// 이것을 같게 하려면 변수에 넣어서 서로 참조하게 해야 true 라고 나온다
+//또한 함수 == 객체 이기 때문에 변수에 넣어주어야 한다.!!!
+// const a = {};
+// const b = a;
+// a === b;
+// > true
+
+// const fun = (값) => () => {
+//     console.log('고차함수 입니다.',값);
+// }
+// const fun(1) === fun(1)
+// fun1 === func(1);
+// fun1===fun1;
+// 태그.addEventListener('click',fun1);
+// 태그.removeEventListener('click',fun1)
+//위와 같이 변수에 넣어야 remove가 가능해진다.!!!
+
       $rock.addEventListener('click', clickButton);
-      $scissors.addEventListener('click',clickButton);
+      $scissors.addEventListener('click', clickButton);
       $paper.addEventListener('click', clickButton);
       //1:01:55 https://youtu.be/wFFX1lSprfU?t=3715
     </script>
   </body>
 </html>
+
+
