@@ -17,7 +17,7 @@
     </div>
     <div>
       <button id="rock" class="btn">바위</button>
-      <button id="scissor" class="btn">가위</button>
+      <button id="scissors" class="btn">가위</button>
       <button id="paper" class="btn">보</button>
     </div>
     <div id = "score">0</div>
@@ -64,6 +64,12 @@
           clearInterval(intervalId);
           clickable = false;
           //점수 게산 및 화면 표시
+          const myChoice = event.target.textContent ==='바위'
+          ? 'rock'
+          :event.target.textContent === '가위'
+          ?'scissors'
+          :'paper'
+          
           setTimeout(() => {
             clickable = true;
             intervalId = setInterval(changeComputerHand, 50);
@@ -122,7 +128,7 @@
       $rock.addEventListener('click', clickButton);
       $scissors.addEventListener('click', clickButton);
       $paper.addEventListener('click', clickButton);
-      //1:01:55 https://youtu.be/wFFX1lSprfU?t=3715
+      //https://youtu.be/wFFX1lSprfU?t=4329
     </script>
   </body>
 </html>
