@@ -6,8 +6,8 @@
     <style>
       td {
         border: 1px solid black;
-        width: 58px;
-        height: 50px;
+        width: 40px;
+        height: 40px;
         text-align: center;
         font-weight: bold;
         font-size: 35px;
@@ -18,6 +18,36 @@
     </style>
   </head>
   <body>
-    <script src="TicTacTo.js"></script>
+    <script>
+      let turn = 'O';
+
+      const data = [];
+      for (let i = 0; i<3;i++){
+        data.push([]);
+      }
+      //배열 안에 배열이 들어있기 때문에 2차원 배열임 const data = [] 에 data.push([]); 가 들어가있으니
+    const $table = document.createElement('table');
+    for (let i = 0 ; i < 3 ; i++){
+      const $tr = document.createElement('tr');
+      for ( let i = 0; i < 3 ; i++){
+        const $td = document.createElement('td');
+        $td.addEventListener('click', (event) => {
+          if (event.target.textContent) return ;
+          //만약 칸에 글자가 있다면
+          console.log('clicked');
+          event.target.textContent = turn;
+          //승부를 확인함
+          if (turn === 'O'){
+            turn = 'X';
+          }else if(turn ==='X'){
+            turn ='O'
+          }
+        })
+        $tr.append($td);
+      }
+      $table.append($tr);
+    }
+    document.body.append($table);
+    </script>
   </body>
 </html>
