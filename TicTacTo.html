@@ -19,6 +19,12 @@
   </head>
   <body>
     <script>
+      const {body} = document;
+      //const body = documnet.body;와 같은 뜻 [어떤 객체안에 속성과 변수 이름이 같을 때 사용함] 구조분해 할당, destructuring assignment 이라고함(객체,배열 둘다 할 수 있음!!)
+      //또한 하나일때 보다 여러줄이 된다면 편리해짐 
+      
+      const $table = document.createElement('table');
+      const $result = document.createElement('div');
       let turn = 'O';
 
       const data = [];
@@ -26,14 +32,14 @@
         data.push([]);
       }
       //배열 안에 배열이 들어있기 때문에 2차원 배열임 const data = [] 에 data.push([]); 가 들어가있으니
-    const $table = document.createElement('table');
+    
     for (let i = 0 ; i < 3 ; i++){
       const $tr = document.createElement('tr');
       for ( let i = 0; i < 3 ; i++){
         const $td = document.createElement('td');
         $td.addEventListener('click', (event) => {
-          if (event.target.textContent) return ;
           //만약 칸에 글자가 있다면
+          if (event.target.textContent) return ;
           console.log('clicked');
           event.target.textContent = turn;
           //승부를 확인함
@@ -47,7 +53,9 @@
       }
       $table.append($tr);
     }
-    document.body.append($table);
+    body.append($table);
+    body.append($result);
+    //https://www.youtube.com/watch?v=wnC31uCAAoo 32:44
     </script>
   </body>
 </html>
