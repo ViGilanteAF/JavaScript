@@ -25,6 +25,7 @@
       
       const $table = document.createElement('table');
       const $result = document.createElement('div');
+      const rows = [];
       let turn = 'O';
 
       const data = [];
@@ -32,15 +33,15 @@
         data.push([]);
       }
       //배열 안에 배열이 들어있기 때문에 2차원 배열임 const data = [] 에 data.push([]); 가 들어가있으니
-    
-    for (let i = 0 ; i < 3 ; i++){
-      const $tr = document.createElement('tr');
-      for ( let i = 0; i < 3 ; i++){
-        const $td = document.createElement('td');
-        $td.addEventListener('click', (event) => {
-          //만약 칸에 글자가 있다면
-          if (event.target.textContent) return ;
-          console.log('clicked');
+
+      const callback = (event) => {
+        //만약 칸에 글자가 있다면
+        if(event.target.textContent !== ''){
+          console.log('빈칸 아임다!!');
+          return;
+        }
+        //빈칸일때
+          console.log('빈칸 입니다.');
           event.target.textContent = turn;
           //승부를 확인함
           if (turn === 'O'){
@@ -48,14 +49,25 @@
           }else if(turn ==='X'){
             turn ='O'
           }
-        })
+          //turn = (turn === 'O'?'X':'O'ㅉ); 와 같은거!
+        
+      }
+    
+    for (let i = 0 ; i < 3 ; i++){
+      const $tr = document.createElement('tr');
+      const cells = [];
+      for ( let j = 0; j < 3 ; j++){
+        const $td = document.createElement('td');
+        cells.push($td);
+        $td.addEventListener('click', callback);
         $tr.append($td);
       }
+      rows.push(cells);
       $table.append($tr);
     }
     body.append($table);
     body.append($result);
-    //https://www.youtube.com/watch?v=wnC31uCAAoo 32:44
+    //https://www.youtube.com/watch?v=wnC31uCAAoo 36:58
     </script>
   </body>
 </html>
