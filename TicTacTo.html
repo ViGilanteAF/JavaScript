@@ -28,6 +28,34 @@
       const rows = [];
       let turn = 'O';
 
+      const checkWinner = (target) => {
+        let rowIndex;
+        let cellindex;
+        rows.forEach((row, ri) =>{
+          row.forEach((cell, ci) => {
+            if (cell === target) {
+              rowIndex = ri;
+              cellIndex = ci;
+            }
+          });
+        });
+      // 세 칸 다 채워졌을 경우
+      let hasWinner = false;
+      //가로횡 검사
+      if (
+        rows[rowIndex][0].textContent === turn && 
+        rows[rowIndex][1].textContent === turn &&
+        rows[rowIndex][2].textContent === turn 
+        ) {
+          hasWinner = true;
+        }
+      //대각선 검사
+      if (
+        rows[0][0].textContent === turn &&
+        rows[1][1].textContent === turn &&
+        rows[2][2].textCon)
+      }
+
       const data = [];
       for (let i = 0; i<3;i++){
         data.push([]);
@@ -35,14 +63,19 @@
       //배열 안에 배열이 들어있기 때문에 2차원 배열임 const data = [] 에 data.push([]); 가 들어가있으니
 
       const callback = (event) => {
+        //만약 이벤트 버블링 현상을 막고싶다고 하면 event.stopPropagation(); 사용하면됨!!!
         //만약 칸에 글자가 있다면
         if(event.target.textContent !== ''){
           console.log('빈칸 아임다!!');
           return;
+         // 만약 진짜로 table 에 이벤트가 발생하도록 원한다면 event.currentTarget 을 사용하면됨!!!
         }
         //빈칸일때
           console.log('빈칸 입니다.');
           event.target.textContent = turn;
+          //승부 판단하는 지점을 여기에 생성을 해도 되지만 이럴경우 CallBack 이 너무 길어지기 때문에
+          //프로그램의 동작 시간이 오래 걸릴수 있기 때문에 위에 따로 함수로 연결해줌!
+          checkWinner();
           //승부를 확인함
           if (turn === 'O'){
             turn = 'X';
@@ -65,9 +98,13 @@
       rows.push(cells);
       $table.append($tr);
     }
+    $table.addEventListener('click',callback);
+     //eventBubbling 응 부모를 따라서(td,tr,table) 마치 공기방울이 버블버블하게 이벤트가 발생되는걸 말함 <= HTML 특성임!!!
     body.append($table);
     body.append($result);
-    //https://www.youtube.com/watch?v=wnC31uCAAoo 36:58
+    //https://www.youtube.com/watch?v=wnC31uCAAoo 1:14:54 (승부 판단)
+    //removeEvenetListener 는 게임자체가 완전히 끝이 났을때 붙여주는것이 좋음
+   
     </script>
   </body>
 </html>
