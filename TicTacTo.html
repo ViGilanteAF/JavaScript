@@ -28,10 +28,20 @@
       const rows = [];
       let turn = 'O';
 
+      // [
+      //   [td, td, td],
+      //   [td, td, td],
+      //   [td, td, td],
+      // ]
+      //여기 9개중 하나의 td가 내가 클릭한 td인지 같은가 찾아보는 2중 반복문을 실행함
+
       const checkWinner = (target) => {
-        let rowIndex;
-        let cellindex;
+        const rowIndex = target.parentNode.rowIndex;
+        //rowIndex 는 tr이 가지고 있으며, td 의 부모태그 가 가지고 있기 때문에 target.parentNode.rowIndex 를 사용하면됨!!!
+        const cellIndex = target.cellIndex;
+        //target 은 td 이기 때문에 자체적으로 cellIndex 를 가지고 있음
         rows.forEach((row, ri) =>{
+          //forEach 를 사용하면 index를 사용할 수 있음!!!
           row.forEach((cell, ci) => {
             if (cell === target) {
               rowIndex = ri;
@@ -49,12 +59,32 @@
         ) {
           hasWinner = true;
         }
+      //세로줄 검사
+      if(
+        rows[0][cellIndex].textContent === turn &&
+        rows[1][cellIndex].textContent === turn &&
+        rows[2][cellIndex].textContent === turn 
+        ) {
+          hasWinner = true;
+        }
       //대각선 검사
       if (
         rows[0][0].textContent === turn &&
         rows[1][1].textContent === turn &&
-        rows[2][2].textCon)
-      }
+        rows[2][2].textContent === turn 
+
+        ) {
+          hasWinner = true;
+        }
+        if(
+          rows[0][2].textContent === turn &&
+          rows[1][1].textContent === turn &&
+          rows[2][0].textContent === turn 
+        ) {
+          hasWinner = true;
+        }
+        return hasWinner;
+      };
 
       const data = [];
       for (let i = 0; i<3;i++){
@@ -75,8 +105,45 @@
           event.target.textContent = turn;
           //승부 판단하는 지점을 여기에 생성을 해도 되지만 이럴경우 CallBack 이 너무 길어지기 때문에
           //프로그램의 동작 시간이 오래 걸릴수 있기 때문에 위에 따로 함수로 연결해줌!
-          checkWinner();
+
           //승부를 확인함
+          if (checkWinner(event.target)){
+            $result.textContent = `${turn}님이 승!!!`;
+            $table.removeEventListener('click', callback);
+            return;
+          }
+          //무승부 검사
+          let count = 0;
+          rows.forEach((row) => {
+            row.forEach((cell) => {
+              if(cell.textContent){
+                count += 1;
+              }
+            });
+          });
+
+          // let draw = 0;
+          // rows.forEach((row) => {
+          //   row.forEach((cell) => {
+          //     if(!cell.textContent){
+          //       draw = false;
+          //     }
+          //   });
+          // });
+          //every 를 사용할 수 있으나 every 는 1차원 배열임 이때 사용하는 방법이 rows.flat() 를 사용하면 1차원 배열로 변함!!!(최신 문법임!!!)
+          //그렇기 때문에 3차원 배열을 1차원화 시키고 싶으면 flat()을 두번 사용하면 됨!!
+          //some 는 하나라도 true 면 true 모두다 false 면 false , every는 모두다 true 면 true 하나라도 false 면 false
+          //(return).textContent 가 false 가 되는 6가지 => 문자열의 빈문자열, boolean 형 false , 0 , null , undefind , NaN , documentNull
+          
+          //let draw = rows.flat().every((td) => td.textContent) 
+          //위 2차원 반복문을 통해 무승부를 확인하는것 보다 flat() 을 이용하여 맨처음 td부터 빈공간이면 무승부를 나타내주는 문이 프로그램 동작에 있어 더 효율적!
+
+          if (count === 9){
+            $result.textContent = `무승부 입니다.`;
+            return;
+          }
+          //9칸이 전무 차있으면 무승부다 = 1칸이라도 비어있으면 무승부가 아니다  
+          //이런 사고를 할 줄 알아야 함!!!
           if (turn === 'O'){
             turn = 'X';
           }else if(turn ==='X'){
@@ -92,7 +159,6 @@
       for ( let j = 0; j < 3 ; j++){
         const $td = document.createElement('td');
         cells.push($td);
-        $td.addEventListener('click', callback);
         $tr.append($td);
       }
       rows.push(cells);
@@ -102,7 +168,7 @@
      //eventBubbling 응 부모를 따라서(td,tr,table) 마치 공기방울이 버블버블하게 이벤트가 발생되는걸 말함 <= HTML 특성임!!!
     body.append($table);
     body.append($result);
-    //https://www.youtube.com/watch?v=wnC31uCAAoo 1:14:54 (승부 판단)
+    //https://www.youtube.com/watch?v=wnC31uCAAoo 1:52:16 (셀프체크)
     //removeEvenetListener 는 게임자체가 완전히 끝이 났을때 붙여주는것이 좋음
    
     </script>
