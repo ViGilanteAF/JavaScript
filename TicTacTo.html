@@ -43,15 +43,16 @@
       //rowIndex 는 tr이 가지고 있으며, td 의 부모태그 가 가지고 있기 때문에 target.parentNode.rowIndex 를 사용하면됨!!!
       const cellIndex = target.cellIndex;
       //target 은 td 이기 때문에 자체적으로 cellIndex 를 가지고 있음
-      rows.forEach((row, ri) => {
+
+      // rows.forEach((row, ri) => {
         //forEach 를 사용하면 index를 사용할 수 있음!!!
-        row.forEach((cell, ci) => {
-          if (cell === target) {
-            rowIndex = ri;
-            cellIndex = ci;
-          }
-        });
-      });
+      //   row.forEach((cell, ci) => {
+      //     if (cell === target) {
+      //       rowIndex = ri;
+      //       cellIndex = ci;
+      //     }
+      //   });
+      // });
       // 세 칸 다 채워졌을 경우
       let hasWinner = false;
       //가로횡 검사
@@ -89,22 +90,37 @@
       return hasWinner;
     };
 
-//승부를 확인함
-if (checkWinner(event.target)) {
+    // const data = [];
+    // for (let i = 0; i < 3; i++) {
+    //   data.push([]);
+    // }
+    //배열 안에 배열이 들어있기 때문에 2차원 배열임 const data = [] 에 data.push([]); 가 들어가있으니
+
+    const checkWinnerAndDraw = (target) => {
+      const hasWinner = checkWinner(target);
+      //승자가 있을시
+      //승부를 확인함
+      if (hasWinner) {
         $result.textContent = `${turn}님이 승!!!`;
-        $table.removeEventListener('click', callback);
+        $table.removeEventListener('click',callback);
         return;
       }
-      //무승부 검사
-      let count = 0;
-      rows.forEach((row) => {
-        row.forEach((cell) => {
-          if (cell.textContent) {
-            count += 1;
-          }
-        });
-      });
+      //승자가 없을시
+      const draw = rows.flat().every((cell) => cell.textContent);
+        if(draw){
+          $result.textContent = '무승부 입니다!';
+          return ;
+        }
 
+              //무승부 검사
+      // let count = 0;
+      // rows.forEach((row) => {
+      //   row.forEach((cell) => {
+      //     if (cell.textContent) {
+      //       count += 1;
+      //     }
+      //   });
+      // });
       // let draw = 0;
       // rows.forEach((row) => {
       //   row.forEach((cell) => {
@@ -120,29 +136,24 @@ if (checkWinner(event.target)) {
 
       //let draw = rows.flat().every((td) => td.textContent) 
       //위 2차원 반복문을 통해 무승부를 확인하는것 보다 flat() 을 이용하여 맨처음 td부터 빈공간이면 무승부를 나타내주는 문이 프로그램 동작에 있어 더 효율적!
+      
+      turn = (turn === 'X'?'O':'X'); 
 
-      if (count === 9) {
-        $result.textContent = `무승부 입니다.`;
+      //   if (turn === 'O') {
+      //   turn = 'X';
+      // } else if (turn === 'X') {
+      //   turn = 'O'
+      // }
+      // 위에 turn = (turn === 'O'?'X':'O');  를 풀어 쓴거!
+
+    };
+
+  let clickable = true;
+  const callback = (event) => {
+      //만약 이벤트 버블링 현상을 막고싶다고 하면 event.stopPropagation(); 사용하면됨!!!
+      if(!clickable){
         return;
       }
-      //9칸이 전무 차있으면 무승부다 = 1칸이라도 비어있으면 무승부가 아니다  
-      //이런 사고를 할 줄 알아야 함!!!
-      if (turn === 'O') {
-        turn = 'X';
-      } else if (turn === 'X') {
-        turn = 'O'
-      }
-      //turn = (turn === 'O'?'X':'O'); 와 같은거!
-
-
-    const data = [];
-    for (let i = 0; i < 3; i++) {
-      data.push([]);
-    }
-    //배열 안에 배열이 들어있기 때문에 2차원 배열임 const data = [] 에 data.push([]); 가 들어가있으니
-
-    const callback = (event) => {
-      //만약 이벤트 버블링 현상을 막고싶다고 하면 event.stopPropagation(); 사용하면됨!!!
       //만약 칸에 글자가 있다면
       if (event.target.textContent !== '') {
         console.log('빈칸 아임다!!');
@@ -154,21 +165,40 @@ if (checkWinner(event.target)) {
       event.target.textContent = turn;
       //승부 판단하는 지점을 여기에 생성을 해도 되지만 이럴경우 CallBack 이 너무 길어지기 때문에
       //프로그램의 동작 시간이 오래 걸릴수 있기 때문에 위에 따로 함수로 연결해줌!
-    }
+      checkWinnerAndDraw(event.target);
 
-    for (let i = 0; i < 3; i++) {
+      if(turn === 'X'){
+        const emptyCells = rows.flat().filter((v) => !v.textContent);
+        const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+        clickable = false;
+        setTimeout(() => {
+        randomCell.textContent = 'X';
+        const hasWinner = checkWinner(randomCell);
+        // if (count === 9) {
+      //   $result.textContent = `무승부 입니다.`;
+      //   return;
+      // }
+
+      //9칸이 전무 차있으면 무승부다 = 1칸이라도 비어있으면 무승부가 아니다  
+      //이런 사고를 할 줄 알아야 함!!!
+        clickable = true;
+       }, 1000); 
+    }
+  };
+
+    for (let i = 1; i <= 3; i++) {
       const $tr = document.createElement('tr');
       const cells = [];
-      for (let j = 0; j < 3; j++) {
+      for (let j = 1; j <= 3; j++) {
         const $td = document.createElement('td');
         cells.push($td);
         $tr.append($td);
       }
       rows.push(cells);
       $table.append($tr);
+      $table.addEventListener('click', callback);
+      //eventBubbling 응 부모를 따라서(td,tr,table) 마치 공기방울이 버블버블하게 이벤트가 발생되는걸 말함 <= HTML 특성임!!!
     }
-    $table.addEventListener('click', callback);
-    //eventBubbling 응 부모를 따라서(td,tr,table) 마치 공기방울이 버블버블하게 이벤트가 발생되는걸 말함 <= HTML 특성임!!!
     body.append($table);
     body.append($result);
     //https://www.youtube.com/watch?v=wnC31uCAAoo 1:52:16 (셀프체크)
