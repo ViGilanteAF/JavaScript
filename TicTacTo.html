@@ -102,7 +102,7 @@
       //승부를 확인함
       if (hasWinner) {
         $result.textContent = `${turn}님이 승!!!`;
-        $table.removeEventListener('click',callback);
+        //$table.removeEventListener('click',callback);
         return;
       }
       //승자가 없을시
@@ -137,7 +137,7 @@
       //let draw = rows.flat().every((td) => td.textContent) 
       //위 2차원 반복문을 통해 무승부를 확인하는것 보다 flat() 을 이용하여 맨처음 td부터 빈공간이면 무승부를 나타내주는 문이 프로그램 동작에 있어 더 효율적!
       
-      turn = (turn === 'X'?'O':'X'); 
+      turn = (turn === 'X' ? 'O' : 'X'); 
 
       //   if (turn === 'O') {
       //   turn = 'X';
@@ -173,7 +173,7 @@
         clickable = false;
         setTimeout(() => {
         randomCell.textContent = 'X';
-        const hasWinner = checkWinner(randomCell);
+        checkWinnerAndDraw(randomCell);
         // if (count === 9) {
       //   $result.textContent = `무승부 입니다.`;
       //   return;
