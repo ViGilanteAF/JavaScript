@@ -40,19 +40,27 @@
             <span id="monster-att"></span>
         </div>
     </div>
-    <script>
+    <script >
         const $startScreen = document.querySelector('#start-screen');
         const $gameMenu = document.querySelector('#game-menu');
         const $battleMenu = document.querySelector('#battle-menu');
         const $heroName = document.querySelector('#hero-name');
+        const $heroLevel = document.querySelector('#hero-level');
+        const $heroHp = document.querySelector('hero-hp');
+        const $heroXp = document.querySelector('hero-xp');
+        const $heroAtt = document.querySelector('#hero-att');
+        
 
-        $startScreen.addEventerListener('submit',(event)=> {
+        $startScreen.addEventListener('submit' , (event) => {
             event.preventDefault();
-            var name = event.target['name-input'].value;
+            const name = event.target['name-input'].value;
+            //form 안에 들어있는 id (input / 등등) 을 가지고 올 수 있음! 
+            // '-' 가 있을경우 [] 를 이용해서 가지고옴
             $startScreen.style.display = 'none';
             $gameMenu.style.display = 'block';
             $heroName.textContent = name;
-        })
+        });
+
     </script>
 </body>
 </html>
