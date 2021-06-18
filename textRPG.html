@@ -46,10 +46,30 @@
         const $battleMenu = document.querySelector('#battle-menu');
         const $heroName = document.querySelector('#hero-name');
         const $heroLevel = document.querySelector('#hero-level');
-        const $heroHp = document.querySelector('hero-hp');
-        const $heroXp = document.querySelector('hero-xp');
+        const $heroHp = document.querySelector('#hero-hp');
+        const $heroXp = document.querySelector('#hero-xp');
         const $heroAtt = document.querySelector('#hero-att');
-        
+        const $monsterName = document.querySelector('#monster-name');
+        const $monsterHp = document.querySelector('#monster-hp');
+        const $monsterAtt = document.querySelector('#monster-att');
+        const $message = document.querySelector('#message');
+ 
+        const hero = {
+            name: '',
+            lev:1 ,
+            hp: 100,
+            maxHp: 100,
+            xp: 0 ,
+            maxXp: 0,
+            att:10 ,
+        };
+        let monster = null;
+
+        const monsterList = [
+            {name: '슬라임', hp: 25, att: 10, xp: 10},
+            {name: '스켈레톤', hp: 50, att: 15, xp: 20},
+            {name: '마왕', hp: 150, att: 35, xp: 50},
+        ];
 
         $startScreen.addEventListener('submit' , (event) => {
             event.preventDefault();
@@ -59,7 +79,13 @@
             $startScreen.style.display = 'none';
             $gameMenu.style.display = 'block';
             $heroName.textContent = name;
+            $heroLevel.textContent = `${hero.lev}Lev`;
+            $heroHp.textContent = `HP: ${hero.hp}/${hero.maxHp}`;
+            $heroXp.textContent = `XP: ${hero.xp}/${15 * hero.lev}`;
+            $heroAtt.textContent = `ATT: ${hero.att}`;
+            hero.name = name;
         });
+        //https://www.youtube.com/watch?v=4P2Vsvhu98Y    17:23
 
     </script>
 </body>
