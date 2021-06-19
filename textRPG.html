@@ -62,6 +62,14 @@
             xp: 0 ,
             maxXp: 0,
             att:10 ,
+            attack(monster){
+                monster.hp -= this.att;
+                this.hp -= monster.att;
+            },
+            heal(monster){
+                this.hp += 20;
+                this.hp -= monster.att;
+            },
         };
         let monster = null;
 
@@ -85,7 +93,61 @@
             $heroAtt.textContent = `ATT: ${hero.att}`;
             hero.name = name;
         });
-        //https://www.youtube.com/watch?v=4P2Vsvhu98Y    17:23
+
+        $gameMenu.addEventListener('submit',(event) => {
+            event.preventDefault();
+            const input = event.target['menu-input'].value;
+            if (input === '1'){ //모험
+                $gameMenu.style.display = 'none';
+                $battleMenu.style.display = 'block';
+                monster = JSON.parse(JSON.stringify(monsterList[Math.floor(Math.random() * monsterList.length)]));
+                //JSOM.parse , JSOM.stringify = 깊은 복사 라는 뜻
+                //깊은복사 를 할때 JSON.parse(json.stringify)를 사용해도 크게 문제가 되진 않지만 성능이 느리고, 함수,Math, Date 같은 객체를 복사를 할 수 없다는 단점이있음
+                // 따라서 실무에서는 lodash 같은 라이브러리 를 사용하곤함!!!
+                monster.maxHp = monster.hp;
+                $monsterName.textContent = monster.name;
+                $monsterHp.textContent = `HP: ${monster.hp}/${monster.maxHp}`;
+                $monsterAtt.textContent = `ATT: ${monster.att}`;
+
+                const monster1 = JSON.parse(JSON.stringify(monsterList[0]));
+                const monster2 = monsterList[0];
+                // 객체를 대입하면 '참조'임!!! 
+                //참조를 하기 싫으면 복사를 해야하는데 깊은복사 와 얕은복사 가 있음
+                // 참조는 둘중 하나만 바뀌면 둘다 바뀜!!
+                const monster3 = {... monster[0]};
+                //객체 리터럴을 복사하는건 얕은복사
+                const monster4 = [... monster[0]];
+                //배열의 리터럴을 복사하는것 또한 얕은복사
+
+                //얕은복사(shallow copy) = 겉 껍대기만 참조관계가 끊긴다
+                //깊은복사 = 전부다 참조관계가 끊긴다
+
+                monster1.name = '새 몬스터';
+                console.log(monsterList[0].name); //슬라임
+                monster2.name = '새 몬스터';
+                console.log(monsterList[0].name); //새 몬스터
+                console.log(monsterList[0] === monster1); // false, 깊은 복사
+                console.log(monsterList[0] === monster2); // true, 참조 관계
+
+            }else if (input === '2'){   //휴식
+
+            }else if (input === '3'){   //종료
+
+            }
+        });
+
+        $battleMenu.addEventListener('submit', (event) => {
+            const imput = event.target;['battle-input'].valueAsNumber;
+            //넘어오는 값(value) 이 텍스트 형식이 아닌 숫자로 보장을 하고 싶을 경우 .valueAsNumber 를 이용하여 숫자만 넘어올 수 있도록 보장함
+            if (input === '1'){
+
+            } else if(input === '2'){
+
+            } else if(input === '3'){
+
+            }
+        })
+        //https://www.youtube.com/watch?v=4P2Vsvhu98Y    49:41
 
     </script>
 </body>
