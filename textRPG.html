@@ -114,9 +114,9 @@
                 // 객체를 대입하면 '참조'임!!! 
                 //참조를 하기 싫으면 복사를 해야하는데 깊은복사 와 얕은복사 가 있음
                 // 참조는 둘중 하나만 바뀌면 둘다 바뀜!!
-                const monster3 = {... monster[0]};
+                //const monster3 = {... monster[0]};
                 //객체 리터럴을 복사하는건 얕은복사
-                const monster4 = [... monster[0]];
+               //const monster4 = [... monster[0]];
                 //배열의 리터럴을 복사하는것 또한 얕은복사
 
                 //얕은복사(shallow copy) = 겉 껍대기만 참조관계가 끊긴다
@@ -137,13 +137,18 @@
         });
 
         $battleMenu.addEventListener('submit', (event) => {
-            const imput = event.target;['battle-input'].valueAsNumber;
+            const imput = event.target;['battle-input'].value;
             //넘어오는 값(value) 이 텍스트 형식이 아닌 숫자로 보장을 하고 싶을 경우 .valueAsNumber 를 이용하여 숫자만 넘어올 수 있도록 보장함
-            if (input === '1'){
+            if (input === '1'){ //공격
+                hero.attack(monster);
+                monster.attack(hero);
+                $heroHp.textContent = `HP: ${hero.hp}/${hero.maxHp}`;
+                $monsterHp.textContent = `HP:${monster.hp}/${monster.maxHp}`;
+                $message.textContent = `${hero.hp}의 데미지를 주고, ${monster.att}의 데미지를 받았다.`;
 
-            } else if(input === '2'){
+            } else if(input === '2'){ //회복
 
-            } else if(input === '3'){
+            } else if(input === '3'){ //도망
 
             }
         })
