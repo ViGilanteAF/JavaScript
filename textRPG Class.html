@@ -68,7 +68,10 @@
                 this.start();
             }
             start() {
+                console.log(this);
                 $gameMenu.addEventListener('submit', this.onGameMenuInput);
+                //addEventListener 했을 경우 this 는 $gameMenu 를 나타낸다
+                //this 는 함수가 호출이 될때 결정이 된다!!
                 $battleMenu.addEventListener('submit', this.onBattleMenuInput);
                 this.changeScreen('game');
             }
@@ -92,6 +95,7 @@
                 event.preventDefault();
                 const input = event.target['menu-input'].value;
                 if (input === '1') {
+                    console.log(game);
                     this.changeScreen('battle');
                 } else if (input === '2') {//휴식
                 } else if (input === '3') {//종료
@@ -138,6 +142,7 @@
                 target.hp -= this.att;
             }
         }
+
         let game = null;
 
         $startScreen.addEventListener('submit', (event) => {
@@ -149,7 +154,7 @@
 
 
 
-        //https://www.youtube.com/watch?v=4P2Vsvhu98Y
+        //https://www.youtube.com/watch?v=4P2Vsvhu98Y  1:43:34
 
     </script>
 </body>
