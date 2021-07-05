@@ -65,15 +65,22 @@
                     { name: '스켈레톤', hp: 50, att: 15, xp: 20 },
                     { name: '마왕', hp: 150, att: 35, xp: 50 },
                 ];
-                this.start();
+                this.start(name);
             }
-            start() {
+            start(name) {
                 console.log(this);
                 $gameMenu.addEventListener('submit', this.onGameMenuInput);
                 //addEventListener 했을 경우 this 는 $gameMenu 를 나타낸다
                 //this 는 함수가 호출이 될때 결정이 된다!!
                 $battleMenu.addEventListener('submit', this.onBattleMenuInput);
                 this.changeScreen('game');
+                this.hero = new Hero(this, name);
+                this.updateHeroStat();
+                //또는 class Hero 에서 this.game.updateHeroStat 으로 써줄수도 있고 
+                //아니면 game 에서 this.heor 에 접근해서 hero 의 메소드 를 사용할 수 도 있다.
+                //서로간에 엮어놓았기 때문에 서로간에 왔다갔다 할 수 있음
+
+
             }
             changeScreen(screen) {
                 if (screen === 'start') {
@@ -107,7 +114,23 @@
                 if (input === '1') { //공격
                 } else if (input === '2') { //회복
                 } else if (input === '3') { //도망
+                    this.changeScreen('game');
                 }
+            }
+            updateHeroStat() {
+                const {hero} = this;
+                if ( hero === null) {
+                    $heroName.textContent = '';
+                    $heroLevel.textContent = '';
+                    $heroHp.textContent = '';
+                    $heroXp.textContent = '';
+                    $heroAtt.textContent = '';
+                }
+                $heroName.textContent = hero.name;
+                    $heroLevel.textContent = `${hero.lev}Lev`;
+                    $heroHp.textContent = `HP: ${hero.hp}/${hero.maxHp}`;
+                    $heroXp.textContent = `XP: ${hero.xp}/${15 * hero.lev}`;
+                    $heroAtt.textContent = `ATT: ${hero.att}`;
             }
         }
 
