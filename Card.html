@@ -55,10 +55,11 @@
         const colors = ['red','orange','yellow','green','white','pink'];
         let colorCopy = colors.concat(colors); //위에 color 배열 하나 더 복사해서 합침 (concat 은 원본을 수정하지 않고 새로운배열을 만들어 낸다)
         let shuffled = [];
+        let clickable = [];
 
         function shuffle() {
             for(let i=0; colorCopy.length>0; i+=1){     // 피셔-에이츠 셔플
-                const randomIndex = Math.floor(Math.random()* colorCopy.length);
+                const randomIndex = Math.floor(Math.random() * colorCopy.length);
                 shuffle = shuffled.concat(colorCopy.splice(randomIndex,1)); //shuffled 에 합쳐서 shuffle 에 대입한다.
             }
         }
@@ -79,13 +80,30 @@
             return card;
         }
 
+        function onClickCard() {
+            
+        }
+
         function startGame() {
+            clickable = false;
             shuffle();
             for(let i = 0 ; i< total; i+=1){
                 const card = createCard(i);
+                card.addEventListener('click',onClickCard);
                 $wrapper.appendChild(card);
-
             }
+
+            document.querySelectorAll('.card').forEach((card, index) => {// 처음 카드 공개
+                setTimeout(() => {
+                    card.classList.add('flipped');
+                },1000 + 100 * index);
+            });
+            
+            setTimeout(() => {  //카드 뒤집기
+                document.querySelectorAll('.card').forEach((card) => {
+                    card.classList.remove('flipped');
+                });
+            },5000);
         }
         startGame();
         //https://www.youtube.com/watch?v=-IMYLgCFVGE 25:27
