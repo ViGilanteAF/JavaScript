@@ -56,11 +56,14 @@
         let colorCopy = colors.concat(colors); //위에 color 배열 하나 더 복사해서 합침 (concat 은 원본을 수정하지 않고 새로운배열을 만들어 낸다)
         let shuffled = [];
         let clickable = [];
+        let clicked = [];
+        let completed = [];
+
 
         function shuffle() {
-            for(let i=0; colorCopy.length>0; i+=1){     // 피셔-에이츠 셔플
+            for(let i = 0; colorCopy.length > 0; i += 1){     // 피셔-에이츠 셔플
                 const randomIndex = Math.floor(Math.random() * colorCopy.length);
-                shuffle = shuffled.concat(colorCopy.splice(randomIndex,1)); //shuffled 에 합쳐서 shuffle 에 대입한다.
+                shuffled = shuffled.concat(colorCopy.splice(randomIndex,1)); //shuffled 에 합쳐서 shuffle 에 대입한다.
             }
         }
 
@@ -81,6 +84,35 @@
         }
 
         function onClickCard() {
+            this.classList.toggle('flipped');
+            clicked.push(this);
+            if(clicked.length !== 2){
+                return;
+            }
+            const firstBackColor = clicked[0].querySelector('.card-back').style.backgroundColor;
+            const secondBackColor = clicked[1].querySelector('.card-back').style.backgroundColor;
+            if(firstBackColor === secondBackColor){// 두 카드가 같은 카드면
+                completed.push(clicked[0]);
+                completed.push(clicked[1]);
+                clicked= [];
+                //위에 3개 라인 을 줄여서 밑에 같이 쓸 수 있음!!
+                //completed = completed.concat(clicked);
+                if(completed.length !== total){
+                    return;
+                }
+                setTimeout(()=>{
+                    alert(`축하합니다!!`);
+                    resetGame();
+                }, 500);
+                
+                return;
+            }
+
+            setTimeout(() =>{
+            clicked[0].classList.remove('flipped');
+            clicked[1].classList.remove('flipped');
+            clicked = [];           
+            },500);
             
         }
 
@@ -89,7 +121,7 @@
             shuffle();
             for(let i = 0 ; i< total; i+=1){
                 const card = createCard(i);
-                card.addEventListener('click',onClickCard);
+                card.addEventListener('click' , onClickCard);
                 $wrapper.appendChild(card);
             }
 
@@ -106,7 +138,16 @@
             },5000);
         }
         startGame();
-        //https://www.youtube.com/watch?v=-IMYLgCFVGE 25:27
+
+        function resetGame() {
+            $wrapper.innerHTML='';
+            colorCopy = colors.concat(colors);
+            shuffled = [];
+            completed = [];
+            startGame();
+
+        }
+        //https://www.youtube.com/watch?v=-IMYLgCFVGE 31:39
     </script>
 </body>
 </html>
