@@ -55,7 +55,7 @@
         const colors = ['red','orange','yellow','green','white','pink'];
         let colorCopy = colors.concat(colors); //위에 color 배열 하나 더 복사해서 합침 (concat 은 원본을 수정하지 않고 새로운배열을 만들어 낸다)
         let shuffled = [];
-        let clickable = [];
+        let clickable = false;
         let clicked = [];
         let completed = [];
 
@@ -84,6 +84,9 @@
         }
 
         function onClickCard() {
+            if(!clickable || completed.includes(this) || clicked[0] === this){
+                return;
+            }
             this.classList.toggle('flipped');
             clicked.push(this);
             if(clicked.length !== 2){
@@ -133,8 +136,9 @@
             
             setTimeout(() => {  //카드 뒤집기
                 document.querySelectorAll('.card').forEach((card) => {
-                    card.classList.remove('flipped');
+                    card.classList.remove('flipped');    
                 });
+                clickable = true;
             },5000);
         }
         startGame();
@@ -147,7 +151,9 @@
             startGame();
 
         }
-        //https://www.youtube.com/watch?v=-IMYLgCFVGE 31:39
+        //https://www.youtube.com/watch?v=-IMYLgCFVGE 56:33
+        //서비스를 만들땐 바보한테 이서비스를 소개 해준다는 생각으로 바보도 이 서비스를 이용할 수 있도록 해야함
+        //보안적인 측면은 사용자들이 해커라고 생각을 하고 서비스를 안전하게 만들어야 함!!!
     </script>
 </body>
 </html>
