@@ -82,7 +82,9 @@
             card.appendChild(cardInner);
             return card;
         }
-
+        //clicked : [2, 5, 8, 9]
+        //TaskQuee : 9번
+        //BackGround : addEventListener(12), setTimeout500, setTimeout500, setTimeout500
         function onClickCard() {
             if(!clickable || completed.includes(this) || clicked[0] === this){
                 return;
@@ -94,12 +96,14 @@
             }
             const firstBackColor = clicked[0].querySelector('.card-back').style.backgroundColor;
             const secondBackColor = clicked[1].querySelector('.card-back').style.backgroundColor;
+            
             if(firstBackColor === secondBackColor){// 두 카드가 같은 카드면
                 completed.push(clicked[0]);
                 completed.push(clicked[1]);
-                clicked= [];
+                clicked = [];
                 //위에 3개 라인 을 줄여서 밑에 같이 쓸 수 있음!!
                 //completed = completed.concat(clicked);
+                
                 if(completed.length !== total){
                     return;
                 }
@@ -110,11 +114,12 @@
                 
                 return;
             }
-
+            clickable = false; 
             setTimeout(() =>{
             clicked[0].classList.remove('flipped');
             clicked[1].classList.remove('flipped');
             clicked = [];           
+            clickable = true;
             },500);
             
         }
