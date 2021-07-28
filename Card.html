@@ -51,13 +51,16 @@
     <script>
         const $wrapper = document.querySelector('#wrapper');
 
-        const total = 12;
-        const colors = ['red','orange','yellow','green','white','pink'];
-        let colorCopy = colors.concat(colors); //위에 color 배열 하나 더 복사해서 합침 (concat 은 원본을 수정하지 않고 새로운배열을 만들어 낸다)
+        const total = parseInt(prompt('카드 개수를 짝수로 입력하세여(최대 20개).'));
+        const colors = ['red','orange','yellow','green','white','pink','cyan','violet','gray','black'];
+        let colorSlice = colors.slice(0,total/2);
+        let colorCopy = colorSlice.concat(colorSlice);
+        //let colorCopy = colors.concat(colors); //위에 color 배열 하나 더 복사해서 합침 (concat 은 원본을 수정하지 않고 새로운배열을 만들어 낸다)
         let shuffled = [];
         let clickable = false;
         let clicked = [];
         let completed = [];
+        let startTime;
 
 
         function shuffle() {
@@ -107,8 +110,9 @@
                 if(completed.length !== total){
                     return;
                 }
+                const endTime = new Date();
                 setTimeout(()=>{
-                    alert(`축하합니다!!`);
+                    alert(`축하합니다!! ${(endTime - startTime) / 1000} 초 걸리셨습니다.`);
                     resetGame();
                 }, 500);
                 
@@ -144,6 +148,7 @@
                     card.classList.remove('flipped');    
                 });
                 clickable = true;
+                startTime = new Date();
             },5000);
         }
         startGame();
