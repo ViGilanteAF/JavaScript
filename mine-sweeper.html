@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>지뢰찾기</title>
+    <style>
+        table { border-collapse: collapse; }
+        td{
+            border: 1px solid #bbb;
+            text-align:center;
+            line-height: 20px;
+            width: 20px;
+            height: 20px;
+            background: #888;
+        }
+        td.opened{ background: white; }
+        td.flag{ background: red; }
+        td.question{ background: orange;}
+
+    </style>
+</head>
+<body>
+    <table id="table">
+        <tbody></tbody>
+    </table>
+    <div id="result"> </div>
+    <script>
+        //      종류                |       코드 숫자       |       코드이름
+        //      열린 칸                     0 ~ 8                   OPENED                 
+        //      닫힌 칸(지뢰  X)            -1                      NORMAL
+        //      물음표 칸(지뢰 X)           -2                      QUESTION
+        //      깃발 칸(지뢰 X)             -3                      FLAG
+        //      물음표 칸(지뢰 O)           -4                      QUESTIION_MINE
+        //      깃발 칸(지뢰 O)             -5                      FLAG_MINE
+        //      닫힌 칸(지뢰 O)             -6                      MINE
+
+        const $tbody = document.querySelector('#table tbody');
+        const $result = document.querySelector('#result');
+        const row = 10; //줄
+        const cell = 10; //칸
+        const mine = 10;
+        const CODE = {
+            NORMAL: -1,
+            QUESTION : -2,
+            FLAG: -3,
+            QUESTION_MINE: -4,
+            FLAG_MINE: -5,
+            MINE: -6,
+            OPENED: 0,  //0 이상이면 다 모두 열린 칸
+        }
+
+        let data;
+
+        function plantMine() {
+            const candidate = Array(row * cell).fill().map((arr, i)=>{
+                return i;
+            });
+
+            const shuffle = [];
+            while(candidate.length> row * cell - mine){
+                const chosen = candidate.aplice(Math.floor(Math.random() * candidate.length),1)[0];
+                shuffle.push(chosen);
+            }
+            const data = [];
+            for (let i = 0; i < row; i++) {
+                const rowData = [];
+                data.push(rowData);
+                for (let j = 0; j < cell; j++) {
+                    rowData.push(CODE.NORMAL);
+                }
+                
+            }
+            //shuffle = [85, 19, 93]                cell = 12  row = 8
+            for (let k = 0; k < shuffle.length; k++) {
+                const ver = Math.floor(shuffle[k]/cell);    //85/12  =  7번째 줄
+                const hor = shuffle[k] % cell;  //85 % 12 1번째 칸
+                data[ver][hor] = CODE.MINE;
+                
+            }
+            //몇번째 칸 에다가 지뢰를 숨겨 놓으라는 코드 X번째 줄 X번째 칸 으로 
+            return data;
+        }
+
+        function drawTable() {
+
+        }
+//https://www.youtube.com/watch?v=7CJF2F5jxE8   40:25
+        drawTable();
+    </script>
+</body>
+</html>

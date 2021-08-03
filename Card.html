@@ -62,7 +62,6 @@
         let completed = [];
         let startTime;
 
-
         function shuffle() {
             for(let i = 0; colorCopy.length > 0; i += 1){     // 피셔-에이츠 셔플
                 const randomIndex = Math.floor(Math.random() * colorCopy.length);
@@ -127,7 +126,7 @@
             },500);
             
         }
-
+        
         function startGame() {
             clickable = false;
             shuffle();
