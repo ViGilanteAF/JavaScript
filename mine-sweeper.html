@@ -60,7 +60,7 @@
 
             const shuffle = [];
             while(candidate.length> row * cell - mine){
-                const chosen = candidate.aplice(Math.floor(Math.random() * candidate.length),1)[0];
+                const chosen = candidate.splice(Math.floor(Math.random() * candidate.length),1)[0];
                 shuffle.push(chosen);
             }
             const data = [];
@@ -83,8 +83,53 @@
             return data;
         }
 
-        function drawTable() {
+        function onRightClick(event) {
+            event.preventDefault();
+            const target = event.target;
+            const rowIndex = target.parentNode.rowIndex;
+            const cellIndex = target.cellIndex;
+            const cellData = data[rowIndex][cellIndex];
+            if (cellData === CODE.MINE) { //지뢰면
+                data[rowIndex][cellIndex] = CODE.QUESTION_MINE; // 물음표 지뢰로
+                target.className = 'question';
+                target.textContent = '?';
+            } else if (cellData === CODE.QUESTION_MINE) { //물음표 지뢰면
+                data[rowIndex][cellIndex] = CODE.QUESTION_MINE; //깃발 지뢰
+                target.className = 'flag';
+                target.textContent= '!';
+            } else if (cellData === CODE.FLAG_MINE) { //깃발 지뢰면
+                data[rowIndex][cellIndex] = CODE.MINE; //일반지뢰 로
+                target.className = '';
+                target.textContent = 'X';
+            } else if (cellData === CODE.NORMAL) {  // 닫힘칸일시
+                data[rowIndex][cellIndex] = CODE.QUESTION;  //물음표로
+                target.className = 'question';
+                target.textContent = '?';
+            } else if (cellData === CODE.QUESTION) {    //물음표면
+                data[rowIndex][cellIndex] = CODE.FLAG;  //깃발로
+                target.className = 'flag';
+                target.textContent = '!';
+            } else if (cellData === CODE.FLAG) {    // 깃발일시
+                data[rowIndex][cellIndex] = CODE.NORMAL; //닫힌 칸
+                target.className = '';
+                target.textContent = '';
+            } 
+        }
 
+        function drawTable() {
+            data = plantMine();
+            data.forEach((row) => {
+                const $tr = document.createElement('tr');
+                row.forEach((cell) => {
+                    const $td = document.createElement('td');
+                    if (cell === CODE.MINE) {
+                        $td.textContent = 'X'; // 편하게 하기 위해
+                    }
+                    $tr.append($td);
+                });
+                $tbody.append($tr);
+                $tbody.addEventListener('contextmenu',onRightClick);
+            })
         }
 //https://www.youtube.com/watch?v=7CJF2F5jxE8   40:25
         drawTable();
