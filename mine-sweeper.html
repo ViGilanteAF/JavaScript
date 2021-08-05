@@ -149,13 +149,19 @@
             const cellData = data[rowIndex][cellIndex];
             if(cellData === CODE.NORMAL){                   //닫힌칸이라면...
                 const count = countMine (rowIndex, cellIndex);
-                target.textContent = count || '';
+                target.textContent = count ?? '';           //  ||
+                //Nullish coalescing
+                //  ??
+                // null (0)과 undefind  면 뒤에껏을 나타내라!
                 target.className = 'opened';
                 data[rowIndex][cellIndex]  = count;
             } else if(cellData === CODE.MINE){              //지뢰칸이면
-                                                            //펑!
-            }                                               //나머지는 무시한다!
-                                                            //아무동작 안함!!!
+             target.textContent = "펑!";                   //펑!
+             target.className = 'opened';
+             $tbody.removeEventListener('contextmenu',onRightClick);
+             $tbody.removeEventListener('click', onLeftClick);
+            }                                             //나머지는 무시한다!
+                                                         //아무동작 안함!!!
         }
 
         function drawTable() {
@@ -174,7 +180,7 @@
                 $tbody.addEventListener('click',onLeftClick);
             })
         }
-//https://www.youtube.com/watch?v=7CJF2F5jxE8   54:17
+//https://www.youtube.com/watch?v=7CJF2F5jxE8   1:24:25
         drawTable();
     </script>
 </body>
