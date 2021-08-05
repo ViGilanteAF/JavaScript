@@ -116,6 +116,48 @@
             } 
         }
 
+        //  1 2 3
+        //  4 5 6 
+        //  7 8 9
+
+        function countMine(rowIndex, cellIndex) {
+            const mines = [CODE.MINE, CODE.QUESTION_MINE, CODE.FLAG_MINE];  //내칸에 -6, -5 , -4 가 있으면 +1 하셈!!
+            let i = 0;
+            mines.includes(data[rowIndex -1]?.[cellIndex - 1]) && i++;
+            mines.includes(data[rowIndex -1]?.[cellIndex]) && i++;
+            mines.includes(data[rowIndex -1]?.[cellIndex + 1]) && i++;
+            //optional chaining
+            //객체나 배열 접근시 만약 undefinded 가 중간에 발생하면 에러를 나타내는데 이때 에러를 발생하지 않게 보호하기 위해 ? 를 앞에 적어줌 (?. 은 세트)
+            mines.includes(data[rowIndex ]?.[cellIndex - 1]) && i++;
+            mines.includes(data[rowIndex ]?.[cellIndex + 1]) && i++;
+
+            mines.includes(data[rowIndex +1]?.[cellIndex - 1]) && i++;
+            mines.includes(data[rowIndex +1]?.[cellIndex]) && i++;
+            mines.includes(data[rowIndex +1]?.[cellIndex + 1]) && i++;
+            return i;
+        }
+         //&& 연산자는 앞에꺼가 존재하면 뒤에껄 실행해라!!! 라는뜻!! (존재 유무는 false 값)
+        // a||b 연산자는 앞에꺼가 존재하지 않으면 뒤에껄 실행해라!!! (존재 유무는 false 값)
+        
+
+        
+
+        function onLeftClick(event){
+            const target = event.target;                    //td 태그
+            const rowIndex = target.parentNode.rowIndex;    // ~ 번째 칸 인지 알 수 있음
+            const cellIndex = target.cellIndex;             //  ~ 번째 줄 인지 알 수 있음
+            const cellData = data[rowIndex][cellIndex];
+            if(cellData === CODE.NORMAL){                   //닫힌칸이라면...
+                const count = countMine (rowIndex, cellIndex);
+                target.textContent = count || '';
+                target.className = 'opened';
+                data[rowIndex][cellIndex]  = count;
+            } else if(cellData === CODE.MINE){              //지뢰칸이면
+                                                            //펑!
+            }                                               //나머지는 무시한다!
+                                                            //아무동작 안함!!!
+        }
+
         function drawTable() {
             data = plantMine();
             data.forEach((row) => {
@@ -129,9 +171,10 @@
                 });
                 $tbody.append($tr);
                 $tbody.addEventListener('contextmenu',onRightClick);
+                $tbody.addEventListener('click',onLeftClick);
             })
         }
-//https://www.youtube.com/watch?v=7CJF2F5jxE8   40:25
+//https://www.youtube.com/watch?v=7CJF2F5jxE8   54:17
         drawTable();
     </script>
 </body>
