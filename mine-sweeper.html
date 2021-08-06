@@ -138,9 +138,41 @@
         }
          //&& 연산자는 앞에꺼가 존재하면 뒤에껄 실행해라!!! 라는뜻!! (존재 유무는 false 값)
         // a||b 연산자는 앞에꺼가 존재하지 않으면 뒤에껄 실행해라!!! (존재 유무는 false 값)
-        
 
-        
+
+        function open(rowIndex, cellIndex) {
+        const target = $tbody.children[rowIndex].children[cellIndex];
+        if (!target) {
+            return;
+        }
+        const count = countMine(rowIndex, cellIndex);
+        target.textContent = count || '';
+        target.className = 'opened';
+        data[rowIndex][cellIndex] = count;
+        return count;
+        }
+
+        function isNormal(cell){
+            return cell === CODE.NORMAL;
+        }
+
+        function openArround(rowIndex, cellIndex) {
+            setTimeout(()=>{
+                const count = open(rowIndex,cellIndex);
+            if(count === 0) {
+                    isNormal(data[rowIndex-1]?.[cellIndex -1]) && openArround(rowIndex -1, cellIndex -1);
+                    isNormal(data[rowIndex-1]?.[cellIndex ]) && openArround(rowIndex -1, cellIndex);
+                    isNormal(data[rowIndex-1]?.[cellIndex +1]) && openArround(rowIndex -1, cellIndex +1);
+
+                    isNormal(data[rowIndex]?.[cellIndex -1]) && openArround(rowIndex , cellIndex -1);
+                    isNormal(data[rowIndex]?.[cellIndex +1]) && openArround(rowIndex , cellIndex +1);
+                    
+                    isNormal(data[rowIndex+1]?.[cellIndex -1]) && openArround(rowIndex +1, cellIndex -1);
+                    isNormal(data[rowIndex+1]?.[cellIndex ]) && openArround(rowIndex +1, cellIndex );
+                    isNormal(data[rowIndex+1]?.[cellIndex +1]) && openArround(rowIndex +1, cellIndex +1);
+                }
+            }, 0);
+        }
 
         function onLeftClick(event){
             const target = event.target;                    //td 태그
@@ -148,13 +180,14 @@
             const cellIndex = target.cellIndex;             //  ~ 번째 줄 인지 알 수 있음
             const cellData = data[rowIndex][cellIndex];
             if(cellData === CODE.NORMAL){                   //닫힌칸이라면...
-                const count = countMine (rowIndex, cellIndex);
-                target.textContent = count ?? '';           //  ||
+                // const count = countMine (rowIndex, cellIndex);
+                // target.textContent = count ?? '';           //  ||
                 //Nullish coalescing
                 //  ??
                 // null (0)과 undefind  면 뒤에껏을 나타내라!
-                target.className = 'opened';
-                data[rowIndex][cellIndex]  = count;
+                // target.className = 'opened';
+                // data[rowIndex][cellIndex]  = count;
+                openArround(rowIndex, cellIndex);
             } else if(cellData === CODE.MINE){              //지뢰칸이면
              target.textContent = "펑!";                   //펑!
              target.className = 'opened';
