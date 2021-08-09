@@ -22,6 +22,13 @@
     </style>
 </head>
 <body>
+    <form id="form">
+        <input placeholder = "가로 줄" id="row" size="5"/>
+        <input placeholder = "세로 줄" id="cell" size="5"/>
+        <input placeholder = "지뢰" id="mine" size="5"/>
+        <button>생성</button>
+    </form>
+    <div id = "timer">0초</div>
     <table id="table">
         <tbody></tbody>
     </table>
@@ -38,9 +45,11 @@
 
         const $tbody = document.querySelector('#table tbody');
         const $result = document.querySelector('#result');
-        const row = 10; //줄
-        const cell = 10; //칸
-        const mine = 10;
+        const $form = document.querySelector('#form');
+        const $timer = document.querySelector('#timer');
+        let row; //줄
+        let cell; //칸
+        let mine;
         const CODE = {
             NORMAL: -1,
             QUESTION : -2,
@@ -52,6 +61,28 @@
         }
 
         let data;
+        let openCount;
+        let startTime;
+        let interval;
+       
+
+        function onSubmit(event) {
+            event.preventDefault();
+            row = parseInt(event.target.row.value);
+            cell = parseInt(event.target.cell.value);
+            mine = parseInt(event.target.mine.value);
+            openCount = 0;
+            clearInterval(interval);
+            $tbody.innerHTML = '';
+            drawTable();
+            startTime = new Date();
+            interval = setInterval(() => {
+            const time = Math.floor((new Date() - startTime) / 1000);
+            $timer.textContent = `${time}초`;
+            },1000)
+        }
+
+        $form.addEventListener('submit', onSubmit);
 
         function plantMine() {
             const candidate = Array(row * cell).fill().map((arr, i)=>{
@@ -141,7 +172,8 @@
 
 
         function open(rowIndex, cellIndex) {
-        const target = $tbody.children[rowIndex].children[cellIndex];
+        if(data[rowIndex]?.[cellIndex] >= CODE.OPENED) return ;
+        const target = $tbody.children[rowIndex]?.children[cellIndex];
         if (!target) {
             return;
         }
@@ -149,6 +181,18 @@
         target.textContent = count || '';
         target.className = 'opened';
         data[rowIndex][cellIndex] = count;
+        data[rowIndex][cellIndex] = count;
+        openCount++;
+        console.log(openCount);
+        if (openCount === row * cell - mine) {
+            const time = (new Date() - startTime)/1000;
+            clearInterval(interval);
+            $tbody.removeEventListener('contextmenu',onRightClick);
+            $tbody.removeEventListener('click',onLeftClick);
+            setTimeout(()=> {
+                alert(`승리! ${time}초만큼 걸렸습니다!`);
+            },500);
+        }
         return count;
         }
 
@@ -204,7 +248,7 @@
                 row.forEach((cell) => {
                     const $td = document.createElement('td');
                     if (cell === CODE.MINE) {
-                        $td.textContent = 'X'; // 편하게 하기 위해
+                      //$td.textContent = 'X'; // 편하게 하기 위해
                     }
                     $tr.append($td);
                 });
@@ -213,7 +257,7 @@
                 $tbody.addEventListener('click',onLeftClick);
             })
         }
-//https://www.youtube.com/watch?v=7CJF2F5jxE8   1:24:25
+        //https://www.youtube.com/watch?v=NvlFTGNsinc
         drawTable();
     </script>
 </body>
