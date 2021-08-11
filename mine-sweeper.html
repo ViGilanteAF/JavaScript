@@ -72,20 +72,23 @@
             cell = parseInt(event.target.cell.value);
             mine = parseInt(event.target.mine.value);
             openCount = 0;
+            normalCellFound = false;
+            searched = null;
+            firstClick = true;
             clearInterval(interval);
             $tbody.innerHTML = '';
             drawTable();
             startTime = new Date();
             interval = setInterval(() => {
-            const time = Math.floor((new Date() - startTime) / 1000);
-            $timer.textContent = `${time}초`;
-            },1000)
+                const time = Math.floor((new Date() - startTime) / 1000);
+                $timer.textContent = `${time}초`;
+            }, 1000);
         }
 
         $form.addEventListener('submit', onSubmit);
 
         function plantMine() {
-            const candidate = Array(row * cell).fill().map((arr, i)=>{
+            const candidate = Array(row * cell).fill().map((arr, i) => {
                 return i;
             });
 
@@ -180,7 +183,6 @@
         const count = countMine(rowIndex, cellIndex);
         target.textContent = count || '';
         target.className = 'opened';
-        data[rowIndex][cellIndex] = count;
         data[rowIndex][cellIndex] = count;
         openCount++;
         console.log(openCount);
@@ -283,6 +285,7 @@
             } else if(cellData === CODE.MINE){              //지뢰칸이면
              target.textContent = "펑!";                   //펑!
              target.className = 'opened';
+             clearInterval(interval);
              $tbody.removeEventListener('contextmenu',onRightClick);
              $tbody.removeEventListener('click', onLeftClick);
             }                                             //나머지는 무시한다!
@@ -303,7 +306,7 @@
                 $tbody.append($tr);
                 $tbody.addEventListener('contextmenu',onRightClick);
                 $tbody.addEventListener('click',onLeftClick);
-            })
+            });
         }
         //https://www.youtube.com/watch?v=NvlFTGNsinc
         drawTable();
