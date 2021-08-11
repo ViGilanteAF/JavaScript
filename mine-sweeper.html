@@ -218,11 +218,59 @@
             }, 0);
         }
 
+        let normalCellFound = false;
+        let searched;
+        let firstClick = true;  //변수를 사용하기 싫으면 openCount = 0 이면 으로 해도 가능함!
+        function transferMine (rowIndex, cellIndex) {
+            if (normalCellFound) return ; // 빈칸 클릭하면 종료
+            if (rowIndex < 0 || rowIndex >= row || cellIndex < 0 || cellIndex >= cell) return ; // 실수로 -1 되는것을 막기위해!! (undefined 나오는걸 방지)
+            if (searched[rowIndex][cellIndex]) { //이미 찾은 칸이면 종료
+                return;
+            }
+            if(isNormal(data[rowIndex]?.[cellIndex] === CODE.NORMAL)) { //빈칸인 경우
+                normalCellFound = true;
+                data[rowIndex][cellIndex] = CODE.MINE;
+            } else { //지로 칸이면, 8개 칸 탐색
+                searched[rowIndex][cellIndex] = true;
+                transferMine(rowIndex -1, cellIndex -1);
+                transferMine(rowIndex -1, cellIndex );
+                transferMine(rowIndex -1, cellIndex +1);
+                transferMine(rowIndex , cellIndex -1);
+                transferMine(rowIndex , cellIndex +1);
+                transferMine(rowIndex +1, cellIndex -1);
+                transferMine(rowIndex +1, cellIndex);
+                transferMine(rowIndex +1, cellIndex +1);
+            }
+        }
+
+        function showMines() {
+                const mines = [CODE.MINE, CODE.QUESTION_MINE, CODE.FLAG_MINE];
+                data.forEach((row,rowIndex) => {
+                    row.forEach((cell, cellIndex) => {
+                        if (mines.includes(cell)){
+                            $tbody.children[rowIndex].children[cellIndex].textContent = 'X';
+                        }
+                    });
+                });
+        }
+
+
         function onLeftClick(event){
             const target = event.target;                    //td 태그
             const rowIndex = target.parentNode.rowIndex;    // ~ 번째 칸 인지 알 수 있음
             const cellIndex = target.cellIndex;             //  ~ 번째 줄 인지 알 수 있음
-            const cellData = data[rowIndex][cellIndex];
+            let cellData = data[rowIndex][cellIndex];
+
+            if(firstClick) {
+                firstClick = false;
+                searched = Array(row).fill().map(()=> []);
+                if(cellData === CODE.MINE){//첫클릭이 지뢰이면
+                    transferMine(rowIndex, cellIndex);  //지뢰를 옮기기
+                    data[rowIndex][cellIndex] = CODE.NORMAL;   //지금 칸을 빈칸으로 만들기
+                    cellData = CODE.NORMAL;
+            }
+        }
+
             if(cellData === CODE.NORMAL){                   //닫힌칸이라면...
                 // const count = countMine (rowIndex, cellIndex);
                 // target.textContent = count ?? '';           //  ||
@@ -248,7 +296,7 @@
                 row.forEach((cell) => {
                     const $td = document.createElement('td');
                     if (cell === CODE.MINE) {
-                      //$td.textContent = 'X'; // 편하게 하기 위해
+                     // $td.textContent = 'X'; // 편하게 하기 위해
                     }
                     $tr.append($td);
                 });
