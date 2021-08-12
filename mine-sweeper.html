@@ -61,7 +61,7 @@
         }
 
         let data;
-        let openCount;
+        let openCount = 0;
         let startTime;
         let interval;
        
@@ -198,24 +198,22 @@
         return count;
         }
 
-        function isNormal(cell){
-            return cell === CODE.NORMAL;
-        }
+      
 
         function openArround(rowIndex, cellIndex) {
             setTimeout(()=>{
                 const count = open(rowIndex,cellIndex);
             if(count === 0) {
-                    isNormal(data[rowIndex-1]?.[cellIndex -1]) && openArround(rowIndex -1, cellIndex -1);
-                    isNormal(data[rowIndex-1]?.[cellIndex ]) && openArround(rowIndex -1, cellIndex);
-                    isNormal(data[rowIndex-1]?.[cellIndex +1]) && openArround(rowIndex -1, cellIndex +1);
+                    openArround(rowIndex -1, cellIndex -1);
+                    openArround(rowIndex -1, cellIndex);
+                    openArround(rowIndex -1, cellIndex +1);
 
-                    isNormal(data[rowIndex]?.[cellIndex -1]) && openArround(rowIndex , cellIndex -1);
-                    isNormal(data[rowIndex]?.[cellIndex +1]) && openArround(rowIndex , cellIndex +1);
+                    openArround(rowIndex , cellIndex -1);
+                    openArround(rowIndex , cellIndex +1);
                     
-                    isNormal(data[rowIndex+1]?.[cellIndex -1]) && openArround(rowIndex +1, cellIndex -1);
-                    isNormal(data[rowIndex+1]?.[cellIndex ]) && openArround(rowIndex +1, cellIndex );
-                    isNormal(data[rowIndex+1]?.[cellIndex +1]) && openArround(rowIndex +1, cellIndex +1);
+                    openArround(rowIndex +1, cellIndex -1);
+                    openArround(rowIndex +1, cellIndex );
+                    openArround(rowIndex +1, cellIndex +1);
                 }
             }, 0);
         }
@@ -229,7 +227,7 @@
             if (searched[rowIndex][cellIndex]) { //이미 찾은 칸이면 종료
                 return;
             }
-            if(isNormal(data[rowIndex]?.[cellIndex] === CODE.NORMAL)) { //빈칸인 경우
+            if(data[rowIndex][cellIndex] = CODE.NORMAL) { //빈칸인 경우
                 normalCellFound = true;
                 data[rowIndex][cellIndex] = CODE.MINE;
             } else { //지로 칸이면, 8개 칸 탐색
@@ -265,7 +263,7 @@
 
             if(firstClick) {
                 firstClick = false;
-                searched = Array(row).fill().map(()=> []);
+                searched = Array(row).fill().map(() => []);
                 if(cellData === CODE.MINE){//첫클릭이 지뢰이면
                     transferMine(rowIndex, cellIndex);  //지뢰를 옮기기
                     data[rowIndex][cellIndex] = CODE.NORMAL;   //지금 칸을 빈칸으로 만들기
@@ -283,6 +281,7 @@
                 // data[rowIndex][cellIndex]  = count;
                 openArround(rowIndex, cellIndex);
             } else if(cellData === CODE.MINE){              //지뢰칸이면
+             showMines();
              target.textContent = "펑!";                   //펑!
              target.className = 'opened';
              clearInterval(interval);
