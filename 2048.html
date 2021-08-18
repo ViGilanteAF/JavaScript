@@ -26,10 +26,41 @@
 
     </style>
 </head>
-<script>
 
-</script>
 <body>
-    
+    <table id="table"></table>
+    <div id="score">0</div>
+    <script>
+        const $table = document.getElementById('table');
+        const $score = document.getElementById('score');
+        let data = [];
+
+        //$table -> $fragment -> $tr -> $td
+        //$fragment 는 메모리 에 만 존재하게끔 함 (성능의 문제가 생기기 때문에)
+        function startGame() {
+            const $fragment = document.createDocumentFragment();
+            [1,2,3,4].forEach(function () {
+                const rowData = [];
+                data.push(rowData);
+                const $tr = document.createElement('tr');
+                [1,2,3,4].forEach(() => {
+                    rowData.push(0);
+                    const $td = document.createElement('td');
+                    $tr.appendChild($td);
+                });
+                $fragment.appendChild($tr);
+
+            });
+            $table.appendChild($fragment);
+            put2ToRandomCell();
+            draw();
+        }
+
+        function put2ToRandomCell() {
+            
+        }
+
+        startGame();
+    </script>
 </body>
 </html>
