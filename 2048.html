@@ -111,28 +111,46 @@
         
         function moveCells(direction){
             switch (direction){
-                case 'left':
+                case 'left':{   //case 문에 {} 를 사용하는 이유는 내부의 변수 를 새롭게 생성시 {} 를 사용해주는 것이 좋다
                     const newData = [[],[],[],[]];
                     data.forEach((rowData, i) => {
                         rowData.forEach((cellData, j) => {
                             if (cellData){
-                                newData[i].push(cellData);
+                                const currentRow = newData[i] //newData = 지금 줄
+                                const prevData = currentRow[currentRow.length - 1];
+                                if(prevData === cellData){  //직전의 값이 지금 값과 같을 경우....
+                                    currentRow[currentRow.length -1 ] *= -2;
+                                } else {
+                                    newData[i].push(cellData);  //빈칸 제외하고 왼쪽 부터 넣어줌    
+                                }
+                                
                             }
                         });
                     });
                     console.log(newData);
                     [1,2,3,4].forEach((rowData, i)=>{
                         [1,2,3,4].forEach((cellData,j) =>{
-                            data[i][j] = newData[i][j] || 0;
+                            data[i][j] = Math.abs(newData[i][j]) || 0; //원본 데이터 수정된 데이터
                         });
                     });
                     break;
-                case 'right':
+                }
+                case 'right':{
+                    const newData = [[],[],[],[]];
+                    
                     break;
-                case 'up':
+                }
+                
+                case 'up':{
+                    const newData = [[],[],[],[]];
                     break;
-                case 'down':
+                }
+                    
+                case 'down':{
+                    const newData = [[],[],[],[]];
                     break;
+                }
+                    
             }
             draw();
         }
