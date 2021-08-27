@@ -146,6 +146,7 @@
                                 const currentRow = newData[i]
                                 const prevData = currentRow[currentRow.length -1 ];
                                 if (prevData === rowData[3-j]) {
+                                    const score = parserInt($score.textContent);
                                     $score.textContent = score + currentRow[currentRow.length -1]*2;
                                     currentRow[currentRow.length - 1]*= -2;
                                 } else {
@@ -170,6 +171,7 @@
                                 const currentRow = newData[j];
                                 const prevData = currentRow[currentRow.length -1];
                                 if (prevData === cellData) {
+                                    const score = parserInt($score.textContent);
                                     $score.textContent = score + currentRow[currentRow.length -1]*2;
                                     currentRow[currentRow.length -1] *= -2;
                                 } else {
@@ -194,6 +196,7 @@
                                 const currentRow = newData[j];
                                 const prevData = currentRow[currentRow.length - 1];
                                 if (prevData === data[3-i][j]) {
+                                    const score = parserInt($score.textContent);
                                     $score.textContent = score + currentRow[currentRow.length -1]*2;
                                     currentRow[currentRow.length -1] *= -2;
                                 } else {
