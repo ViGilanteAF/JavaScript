@@ -23,7 +23,6 @@
         .color-512{background-color: #edc950; color:#776e65;}
         .color-1024{background-color: #edc53f; color:#776e65;}
         .color-2048{background-color: #edc22e; color:#776e65;}
-
     </style>
 </head>
 
@@ -33,7 +32,9 @@
     <script>
         const $table = document.getElementById('table');
         const $score = document.getElementById('score');
+        const $back = document.getElementById('back');
         let data = [];
+        let histroy = [];
 
         //$table -> $fragment -> $tr -> $td
         //$fragment 는 메모리 에 만 존재하게끔 함 (성능의 문제가 생기기 때문에)
@@ -101,13 +102,13 @@
         // });
         
         startGame();
-        data = [
-            [0,2,4,2],
-            [0,0,8,0],
-            [2,2,4,8],
-            [0,16,0,32],
-        ];
-        draw();
+        // data = [
+        //     [32,2,4,2],
+        //     [64,4,8,4],
+        //     [2,1024,1024,32],
+        //     [32,16,64,4],
+        // ];
+        // draw();
         
         function moveCells(direction){
             switch (direction){
@@ -119,6 +120,8 @@
                                 const currentRow = newData[i] //newData = 지금 줄
                                 const prevData = currentRow[currentRow.length - 1];
                                 if(prevData === cellData){  //직전의 값이 지금 값과 같을 경우....
+                                    const score = parserInt($score.textContent);
+                                    $score.textContent = score + currentRow[currentRow.length -1]*2;
                                     currentRow[currentRow.length -1 ] *= -2;
                                 } else {
                                     newData[i].push(cellData);  //빈칸 제외하고 왼쪽 부터 넣어줌    
@@ -143,6 +146,7 @@
                                 const currentRow = newData[i]
                                 const prevData = currentRow[currentRow.length -1 ];
                                 if (prevData === rowData[3-j]) {
+                                    $score.textContent = score + currentRow[currentRow.length -1]*2;
                                     currentRow[currentRow.length - 1]*= -2;
                                 } else {
                                     newData[i].push(rowData[3-j]);
@@ -158,7 +162,6 @@
                     })
                     break;
                 }
-                
                 case 'up':{
                     const newData = [[],[],[],[]];
                     data.forEach((rowData,i) =>{
@@ -167,6 +170,7 @@
                                 const currentRow = newData[j];
                                 const prevData = currentRow[currentRow.length -1];
                                 if (prevData === cellData) {
+                                    $score.textContent = score + currentRow[currentRow.length -1]*2;
                                     currentRow[currentRow.length -1] *= -2;
                                 } else {
                                     newData[j].push(cellData);
@@ -182,7 +186,6 @@
                     });
                     break;
                 }
-                    
                 case 'down':{
                     const newData = [[],[],[],[]];
                     data.forEach((rowData, i) => {
@@ -191,6 +194,7 @@
                                 const currentRow = newData[j];
                                 const prevData = currentRow[currentRow.length - 1];
                                 if (prevData === data[3-i][j]) {
+                                    $score.textContent = score + currentRow[currentRow.length -1]*2;
                                     currentRow[currentRow.length -1] *= -2;
                                 } else {
                                     newData[j].push(data[3 -i][j]);
@@ -207,9 +211,19 @@
                     
                     break;
                 }
-                    
             }
-            draw();
+            if(data.flat().includes(2048)){
+                draw();
+                setTimeout(() => {
+                    alert('Winner Winner Chincken Dinner!!');
+                },0);
+            }else if (!data.flat().includes(0)) {
+                alert(`패배했습니다. Score ${$score.textContent}`);
+            }else {
+                put2ToRandomCell();
+                draw();    
+            }
+            
         }
             window.addEventListener('keyup',(event) => {
                 if(event.key === 'ArrowUp'){
