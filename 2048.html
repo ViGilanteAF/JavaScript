@@ -120,7 +120,7 @@
                                 const currentRow = newData[i] //newData = 지금 줄
                                 const prevData = currentRow[currentRow.length - 1];
                                 if(prevData === cellData){  //직전의 값이 지금 값과 같을 경우....
-                                    const score = parserInt($score.textContent);
+                                    const score = parseInt($score.textContent);
                                     $score.textContent = score + currentRow[currentRow.length -1]*2;
                                     currentRow[currentRow.length -1 ] *= -2;
                                 } else {
@@ -144,9 +144,9 @@
                         rowData.forEach((cellData, j)=>{
                             if(rowData[3-j]) {
                                 const currentRow = newData[i]
-                                const prevData = currentRow[currentRow.length -1 ];
+                                const prevData = currentRow[currentRow.length -1];
                                 if (prevData === rowData[3-j]) {
-                                    const score = parserInt($score.textContent);
+                                    const score = parseInt($score.textContent);
                                     $score.textContent = score + currentRow[currentRow.length -1]*2;
                                     currentRow[currentRow.length - 1]*= -2;
                                 } else {
@@ -171,7 +171,7 @@
                                 const currentRow = newData[j];
                                 const prevData = currentRow[currentRow.length -1];
                                 if (prevData === cellData) {
-                                    const score = parserInt($score.textContent);
+                                    const score = parseInt($score.textContent);
                                     $score.textContent = score + currentRow[currentRow.length -1]*2;
                                     currentRow[currentRow.length -1] *= -2;
                                 } else {
@@ -196,7 +196,7 @@
                                 const currentRow = newData[j];
                                 const prevData = currentRow[currentRow.length - 1];
                                 if (prevData === data[3-i][j]) {
-                                    const score = parserInt($score.textContent);
+                                    const score = parseInt($score.textContent);
                                     $score.textContent = score + currentRow[currentRow.length -1]*2;
                                     currentRow[currentRow.length -1] *= -2;
                                 } else {
