@@ -46,6 +46,103 @@
     </style>
 </head>
 <body>
-    
+    <div>
+        <span id = "timer">8</span>초 &nbsp;
+        <span id = "score">0</span>점
+        <button id = "start">시작</button>
+    </div>
+    <div id="game">
+        <div class="row">
+            <div class="cell">
+                <div class="hole"></div>
+                <div class="gopher hidden"></div>
+                <div class="bomb hidden"></div>
+                <div class="hole-front"></div>
+            </div>
+            <div class="cell">
+                <div class="hole"></div>
+                <div class="gopher hidden"></div>
+                <div class="bomb hidden"></div>
+                <div class="hole-front"></div>
+            </div>
+            <div class="cell">
+                <div class="hole"></div>
+                <div class="gopher hidden"></div>
+                <div class="bomb hidden"></div>
+                <div class="hole-front"></div>
+            </div>
+        </div>
+        <div class = "row">
+            <div class = "cell">
+                <div class="hole"></div>
+                <div class="gopher hidden"></div>
+                <div class="bomb hidden"></div>
+                <div class="hole-front"></div>
+            </div>
+            <div class="cell">
+                <div class="hole"></div>
+                <div class="gopher hidden"></div>
+                <div class="bomb hidden"></div>
+                <div class="hole-front"></div>
+            </div>
+            <div class="cell">
+                <div class="hole"></div>
+                <div class="gopher hidden"></div>
+                <div class="bomb hidden"></div>
+                <div class="hole-front"></div>
+            </div>
+        </div>
+        <div class = "row">
+            <div class = "cell">
+                <div class="hole"></div>
+                <div class="gopher hidden"></div>
+                <div class="bomb hidden"></div>
+                <div class="hole-front"></div>
+            </div>
+            <div class="cell">
+                <div class="hole"></div>
+                <div class="gopher hidden"></div>
+                <div class="bomb hidden"></div>
+                <div class="hole-front"></div>
+            </div>
+            <div class="cell">
+                <div class="hole"></div>
+                <div class="gopher hidden"></div>
+                <div class="bomb hidden"></div>
+                <div class="hole-front"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const $timer = document.querySelector('#timer');
+        const $score = document.querySelector('#score');
+        const $game = document.querySelector('#game');
+        const $start = document.querySelector('#start');
+        const $$cells = document.querySelector('.cell');
+
+        const holes = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+        let started = false;
+        let score = 0;
+
+        $start.addEventListener('click', () => {
+            if(started) return ;// 이미 시작하면 무시
+            started = true;
+            console.log('시작');
+            const tickId = setInterval(tick, 1000);
+            tick();
+        });
+
+        function tick() {
+            console.log('왜 안돼!');
+            holes.forEach((hole, index) => {
+                const $gopher = $$cells[index].querySelector('.gopher');
+                holes[index] = setTimeout(() => {   //1초뒤에 사라짐
+                    $gopher.classList.add('hidden');
+                    holes[index] = 0;
+                }, 1000);
+                $gopher.classList.remove('hidden');
+            });
+        }
+    </script>
 </body>
 </html>
