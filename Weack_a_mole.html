@@ -118,7 +118,7 @@
         const $score = document.querySelector('#score');
         const $game = document.querySelector('#game');
         const $start = document.querySelector('#start');
-        const $$cells = document.querySelector('.cell');
+        const $$cells = document.querySelectorAll('.cell');
 
         const holes = [0, 0, 0, 0, 0, 0, 0, 0, 0];
         let started = false;
@@ -132,14 +132,22 @@
             tick();
         });
 
+        //화면 : 
+        //호출스택: remove
+        //백그라운드 : interval(tick, 1000), setTimeout(add, 1000)
+        //태스크 큐 : tick, add
+        
         function tick() {
-            console.log('왜 안돼!');
+            console.log('왜 안돼!!');
             holes.forEach((hole, index) => {
+                if(hole) return;
                 const $gopher = $$cells[index].querySelector('.gopher');
                 holes[index] = setTimeout(() => {   //1초뒤에 사라짐
+                    console.log('add');
                     $gopher.classList.add('hidden');
                     holes[index] = 0;
                 }, 1000);
+                console.log('remove');
                 $gopher.classList.remove('hidden');
             });
         }
