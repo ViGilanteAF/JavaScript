@@ -137,18 +137,33 @@
         //백그라운드 : interval(tick, 1000), setTimeout(add, 1000)
         //태스크 큐 : tick, add
         
+        let gopherPercent = 0.3;
+        let bombPercent = 0.5;
+        //0,1,2,3,4,5,6,7,8,9 중에 0,1,2 가 나오면 3보다 작으니 두더지가 나옴 4,5 가 나오면 폭탄이 나오도록  그이상이 나오면 아무것도 나오지 않도록함
+        //그렇기 때문에 누적 확률을 사용하는 것이 좋음
         function tick() {
             console.log('왜 안돼!!');
             holes.forEach((hole, index) => {
                 if(hole) return;
-                const $gopher = $$cells[index].querySelector('.gopher');
-                holes[index] = setTimeout(() => {   //1초뒤에 사라짐
+                const randomValue = Math.random(); //random 한 숫자롤 선택
+                if(Math.random() < gopherPercent){ //gopher 보다 작으면 실행
+                    const $gopher = $$cells[index].querySelector('.gopher');
+                    holes[index] = setTimeout(() => {   //1초뒤에 사라짐
                     console.log('add');
                     $gopher.classList.add('hidden');
                     holes[index] = 0;
                 }, 1000);
                 console.log('remove');
                 $gopher.classList.remove('hidden');
+                } else if(Math.random() < bombPercent){ //만약 gopher 보다 크면 요기 실행
+                    const $bomb = $$cells[index].querySelector('.bomb');
+                    holes[index] = setTimeout(()=>{
+                        $bomb.classList.add('hidden');
+                        holes[index] = 0;
+                    }, 1000 );
+                    $bomb.classList.remove('hidden');
+                }
+                
             });
         }
     </script>
