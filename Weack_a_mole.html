@@ -123,11 +123,23 @@
         const holes = [0, 0, 0, 0, 0, 0, 0, 0, 0];
         let started = false;
         let score = 0;
+        let time = 10;
 
         $start.addEventListener('click', () => {
             if(started) return ;// 이미 시작하면 무시
             started = true;
             console.log('시작');
+            const timerId = setInterval(()=> {
+                time = (time * 10 -1) / 10; //time - 0.1 
+                $timer.textContent = time;
+                if(time === 0){
+                    setTimeout(()=> {
+                        clearInterval(timerId);
+                        clearInterval (tickId);
+                        alert(`게임오버! 점수: ${score}점!`)
+                    },50);
+                }
+            },100);
             const tickId = setInterval(tick, 1000);
             tick();
         });
@@ -149,15 +161,15 @@
                 if(Math.random() < gopherPercent){ //gopher 보다 작으면 실행
                     const $gopher = $$cells[index].querySelector('.gopher');
                     holes[index] = setTimeout(() => {   //1초뒤에 사라짐
-                    console.log('add');
-                    $gopher.classList.add('hidden');
-                    holes[index] = 0;
-                }, 1000);
-                console.log('remove');
+                        console.log('add');
+                        $gopher.classList.add('hidden');
+                        holes[index] = 0;
+                    }, 1000);
+                    console.log('remove');
                 $gopher.classList.remove('hidden');
                 } else if(Math.random() < bombPercent){ //만약 gopher 보다 크면 요기 실행
                     const $bomb = $$cells[index].querySelector('.bomb');
-                    holes[index] = setTimeout(()=>{
+                    holes[index] = setTimeout(() => {
                         $bomb.classList.add('hidden');
                         holes[index] = 0;
                     }, 1000 );
@@ -169,9 +181,30 @@
 
         $$cells.forEach(($cell, index) => {
             $cell.querySelector('.gopher').addEventListener('click', (event)=> {
-                
-            })
-        })
+                if(!event.target.classList.contains('dead')){
+                    score += 1;
+                    $score.textContent = score;
+                }
+                event.target.classList.add('dead');
+                event.target.classList.add('hidden');
+                clearTimeout(holes[index]); // 기존 타이머 제거
+                setTimeout(() => {
+                    holes[index] = 0;
+                    event.target.classList.remove('dead');
+                }, 1000);
+                score +=1;
+                $score.textContent = score;
+            });
+            $cell.querySelector('.bomb').addEventListener('click',(event) => {
+                event.target.classList.add('boom');
+                event.target.classList.add('hidden');
+                clearTimeout(holes[index]); // 기존 타이머 제거
+                setTimeout(() => {
+                    holes[index] = 0;
+                    event.target.classList.remove('boom');
+                 },1000);
+            });
+        });
     </script>
 </body>
 </html>
