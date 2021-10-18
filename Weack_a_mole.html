@@ -192,8 +192,10 @@
                     holes[index] = 0;
                     event.target.classList.remove('dead');
                 }, 1000);
-                score +=1;
-                $score.textContent = score;
+                if(!event.target.classList.contains('dead')){   //얻어맞지 않은 두더지는 점수를 부여함!
+                    score +=1;
+                    $score.textContent = score;
+                }
             });
             $cell.querySelector('.bomb').addEventListener('click',(event) => {
                 event.target.classList.add('boom');
